@@ -1,97 +1,84 @@
 # CerebroAI — Resume Intelligence Platform
 
-> **Neural resume intelligence. Built for job seekers, recruiters, and hiring teams.**
-
-CerebroAI is a full-stack AI-powered resume analysis platform that combines deep NLP, semantic matching, and Gemini AI to give you unmatched insight into your resume's performance.
+CerebroAI is an AI-driven resume analysis platform designed to evaluate and optimize resumes. It utilizes natural language processing and the Gemini AI model to provide actionable insights, semantic job description matching, and applicant screening capabilities.
 
 ---
 
-## Features
+## Key Features
 
-- **ATS Scoring** — Grades your resume against recruiter parsing algorithms: formatting, section structure, contact info, skill density, and experience impact.
-- **Keyword Gap Decoder** — Semantic cosine similarity + phrase matching against any job description to reveal exactly what's missing.
-- **AI Recruiter Engine** — Upload up to 10 resumes at once. NLP pipeline ranks candidates by composite score, keyword coverage, and semantic alignment.
-- **Cover Letter Generator** — AI-generated, tone-customizable cover letters tailored to a specific JD.
-- **Interview Prep** — Generates 4 tailored questions (Technical, Project, Behavioral, HR) per candidate profile.
-- **AI Resume Assistant** — Chat with your resume. Ask for improvements, skill suggestions, and summary rewrites.
-- **Shareable Reports** — Export and share a read-only analysis report via URL.
+- **ATS Evaluation:** Analyzes resumes against standard parsing criteria, evaluating formatting, structure, and skill density.
+- **Job Description Alignment:** Employs semantic similarity and keyword analysis to identify gaps between a resume and a target job description.
+- **Batch Screening:** Allows processing of multiple resumes simultaneously, ranking candidates based on keyword coverage and semantic alignment.
+- **Cover Letter Generation:** Drafts context-aware cover letters tailored to specific job postings.
+- **Interview Preparation:** Generates relevant technical and behavioral interview questions based on the candidate's profile.
+- **Interactive AI Assistant:** Provides a conversational interface to ask specific questions about the resume and request improvements.
 
 ---
 
-## Tech Stack
+## Technology Stack
 
-**Frontend**
-- React 19 + TypeScript + Vite
-- Tailwind CSS v4 + Framer Motion + Recharts
-- Space Grotesk + Syne fonts
+**Frontend Architecture**
+- React 19, TypeScript, Vite
+- Tailwind CSS v4, Framer Motion, Recharts
 
-**Backend**
+**Backend Architecture**
 - FastAPI (Python)
 - Google Gemini 2.5 Flash
-- pdfplumber + python-docx
-- In-memory rate limiting
+- Document Parsing: pdfplumber, python-docx
 
 ---
 
-## Architecture
+## System Architecture
 
-CerebroAI follows a decoupled client-server architecture:
+The platform uses a decoupled client-server architecture:
 
-```
-frontend/          React SPA (Vite)
+```text
+frontend/          React Single Page Application
 backend/           FastAPI REST API
-  ├── main.py      API routes + middleware
-  ├── parser.py    PDF/DOCX text extraction
-  ├── analyzer.py  NLP resume analysis
-  ├── ats_score.py ATS scoring engine
-  ├── jd_matcher.py  Semantic JD matching
-  ├── resume_rater.py  Multi-pillar rating
-  └── gemini_service.py  Gemini AI client
+  ├── main.py      API routing and middleware
+  ├── parser.py    Document text extraction
+  ├── analyzer.py  NLP-based resume analysis
+  ├── ats_score.py ATS evaluation logic
+  ├── jd_matcher.py  Semantic matching engine
+  ├── resume_rater.py  Multi-criteria rating system
+  └── gemini_service.py  AI model integration
 ```
 
 ---
 
-## Quick Start
+## Local Development Setup
 
-### Backend
+### Backend Environment
 ```bash
 cd backend
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env  # add your GEMINI_API_KEY
+cp .env.example .env  # Configure GEMINI_API_KEY
 uvicorn main:app --reload --port 8000
 ```
 
-### Frontend
+### Frontend Environment
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-App runs at `http://localhost:5173`
+The application will be accessible at `http://localhost:5173`.
 
 ---
 
-## API Endpoints
+## API Reference
 
-| Method | Endpoint | Description |
+| Method | Endpoint | Purpose |
 |---|---|---|
-| GET | `/health` | API health + Gemini status |
-| POST | `/analyze` | Full resume analysis |
-| POST | `/ats-score` | ATS score & breakdown |
-| POST | `/rate` | Multi-pillar resume rating |
-| POST | `/jd-match` | Resume vs JD matching |
-| POST | `/screen-resumes` | Batch multi-resume screening |
-| POST | `/generate-cover-letter` | AI cover letter |
-| POST | `/generate-interview-questions` | AI interview questions |
-| POST | `/chat` | AI resume assistant |
-
----
-
-## Built By
-
-**Parth Gupta** — Full Stack Development Internship @ IncodeVision Labs · Task 04
-
-`#incodevision` `#AI` `#NLP` `#MachineLearning` `#FullStack`
+| GET | `/health` | Service health and AI connection status |
+| POST | `/analyze` | Comprehensive resume extraction and analysis |
+| POST | `/ats-score` | ATS compatibility evaluation |
+| POST | `/rate` | Multi-dimensional resume scoring |
+| POST | `/jd-match` | Resume and job description comparison |
+| POST | `/screen-resumes` | Batch processing and candidate ranking |
+| POST | `/generate-cover-letter` | Automated cover letter drafting |
+| POST | `/generate-interview-questions` | Candidate-specific interview preparation |
+| POST | `/chat` | Contextual resume assistant interface |
