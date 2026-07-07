@@ -78,37 +78,45 @@ class ResumeAnalyzer:
 
         if is_demo:
             info = {
-                "name": "Marcus Vance",
-                "email": "marcus.vance@devhq.net",
-                "phone": "+1 (555) 234-5678",
-                "linkedin": "linkedin.com/in/marcusvance",
-                "github": "github.com/marcusvance",
+                "name": "Bipul Jaiswal",
+                "email": "bipuljaiswal55406@gmail.com",
+                "phone": "+91-9889215508",
+                "linkedin": "linkedin.com/in/bipuljaiswal1337",
+                "github": "github.com/r3curs1v3-pr0xy",
                 "skills": [
-                    "Java", "Spring Boot", "Python", "SQL", "REST", "Docker",
-                    "Kubernetes", "Git", "GitHub", "Linux", "PostgreSQL", "Redis", "AWS"
+                    "Penetration Testing", "Web Application Security", "API Security", "Network Security",
+                    "Mobile Security (Android & iOS)", "Infrastructure Security", "Secure Code Review",
+                    "semgrep", "trufflehog", "checkmarx", "AWS Cloud Security", "Google Cloud Security",
+                    "Azure Cloud Security", "Red Team Operations", "Container Security (Docker & Kubernetes)",
+                    "Python", "GoLang", "Bash", "NodeJS", "JavaScript", "PHP", "MongoDB", "BurpSuite",
+                    "Kali Linux", "Metasploit", "Nessus", "Acunetix", "SQLMap", "Nuclei", "OWASP ZAP",
+                    "Nmap", "Jadx", "ADB", "Frida", "Objection", "MobSF", "CloudSploit", "ScoutSuite"
                 ],
                 "education": [
-                    "B.S. in Computer Science | University of Washington | 2020"
+                    "B.Tech in Computer Science and Engineering | Lovely Professional University | 2019 - 2023"
                 ],
                 "experience": [
-                    "Software Engineer | SystemScale Industries | 2020 - 2023 | "
-                    "Architected distributed Java Spring Boot APIs handling 10k+ concurrent threads. "
-                    "Optimized database read indexing in PostgreSQL, reducing query latency by 40%. "
-                    "Deployed Docker clusters on Kubernetes, achieving 99.9% uptime.",
-                    "Junior Software Engineer | DataBridge Corp | 2019 - 2020 | "
-                    "Built RESTful APIs in Python/Flask, increasing team delivery speed by 25%. "
-                    "Collaborated with cross-functional teams to ship 3 major product releases."
+                    "Senior Security Consultant | SecureLayer7 Technologies | 2022 - Present | "
+                    "Performed VAPT on Web, API, Mobile, Infrastructure, and cloud configurations for enterprise clients. "
+                    "Conducted cloud assessments (AWS, Scout Suite, CloudSploit) and manual/automated secure code reviews. "
+                    "Led project scoping, team coordination, and presented technical vulnerability reports.",
+                    "Security Researcher & Bug Bounty Hunter | Hackerone / Synack Red Team | 2019 - Present | "
+                    "Disclosed 100+ high and medium severity vulnerabilities. "
+                    "Earned rewards and hall of fame honors across multiple bug bounty sites including CapitalOne, Philips, and Deutsche Telekom."
                 ],
                 "projects": [
-                    "Distributed Task Scheduler | Built a background queue processor in Java using "
-                    "RabbitMQ for async messaging, reducing processing time by 60%.",
-                    "Resume Intellect | Developed a full-stack ATS analysis tool using React + FastAPI "
-                    "and Gemini API, deployed on Google Cloud."
+                    "Vajra | Advanced framework for Bug Bounty automation featuring parallel processing, CVE scan, port scan, subdomain takeover, and notification services.",
+                    "VULNCON CTF Infrastructure | Deployed dockerized CTF challenge environments and managed secure infrastructure from 2020 to 2024."
                 ],
-                "certifications": ["AWS Certified Developer – Associate"],
+                "certifications": [
+                    "Certified Red Team Professional (CRTP)",
+                    "Certified Ethical Hacker (CEH)",
+                    "CompTia Security+",
+                    "Certified AppSec Practitioner"
+                ],
                 "summary": (
-                    "Software engineer with 4+ years building scalable distributed systems. "
-                    "Specialized in Java, Python, and cloud-native architectures."
+                    "Experienced Security Consultant and Synack Red Teamer. "
+                    "Specialized in VAPT, Secure Code Review, and Cloud/Container security."
                 )
             }
         else:

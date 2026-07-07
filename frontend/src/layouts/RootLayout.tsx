@@ -502,7 +502,7 @@ export default function RootLayout() {
                 <a href="#" className="hover:text-[#0ef6cc] transition-colors">Privacy</a>
                 <a href="#" className="hover:text-[#0ef6cc] transition-colors">Terms</a>
               </div>
-              <span className="text-[10px]">© 2026 CerebroAI · Built by Parth Gupta</span>
+              <span className="text-[10px]">© 2026 CerebroAI · Smart Resume Intelligence</span>
             </div>
           </footer>
         </div>

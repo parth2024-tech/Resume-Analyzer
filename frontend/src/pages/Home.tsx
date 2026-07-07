@@ -65,7 +65,7 @@ export default function Home() {
   };
 
   const loadDemo = () => {
-    const demoFile = new File(['demo_content'], 'Parth_Gupta_Software_Engineer.pdf', { type: 'application/pdf' });
+    const demoFile = new File(['demo_content'], 'Bipul_Jaiswal_Resume.pdf', { type: 'application/pdf' });
     processFile(demoFile);
   };
 
