@@ -1,10 +1,12 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import {
   Upload, X, FileText, Send, AlertCircle, Trophy, Medal, Award,
   ChevronDown, ChevronUp, CheckCircle2, XCircle, Zap, Users,
   Target, Download, BarChart2, Brain, Hash, Layers, ArrowUpDown,
-  Filter, RefreshCw, Star, TrendingUp, Circle
+  Filter, RefreshCw, Star, TrendingUp, Circle, Copy, CheckSquare,
+  Square, GitCompare, Info, Search, Tag, ChevronRight, ClipboardCheck,
+  ThumbsUp, ThumbsDown, HelpCircle, Clipboard, BarChart3
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -67,6 +69,18 @@ interface ScreeningResponse {
 }
 
 type SortKey = 'composite_score' | 'match_percentage' | 'ats_score' | 'keyword_score';
+type CandidateStatus = 'shortlisted' | 'maybe' | 'rejected' | null;
+
+// ─── Score Explanations ───────────────────────────────────────────────────────
+
+const SCORE_EXPLANATIONS: Record<string, string> = {
+  'Composite Score': 'Weighted blend of JD Match (75%) and ATS Quality (25%). The primary ranking signal.',
+  'JD Match': 'Overall match against the job description combining keyword, semantic, and phrase signals.',
+  'Keyword Coverage': 'Percentage of required JD keywords found in the resume. Exact or stemmed matches.',
+  'Semantic (Cosine)': 'TF-IDF cosine similarity between resume text and JD. Captures meaning, not just exact words.',
+  'Phrase Match': 'Multi-word phrases from the JD found verbatim in the resume (e.g. "machine learning engineer").',
+  'ATS Score': 'Resume quality score: formatting, sections, contact info, skill presence, and experience impact.',
+};
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -137,6 +151,53 @@ function ScoreRing({ score, size = 72 }: { score: number; size?: number }) {
   );
 }
 
+// ─── Tooltip ─────────────────────────────────────────────────────────────────
+
+function ScoreTooltip({ label, value, color, theme }: { label: string; value: number; color: string; theme: string }) {
+  const [show, setShow] = useState(false);
+  const explanation = SCORE_EXPLANATIONS[label];
+  return (
+    <div className="space-y-1 relative">
+      <div className="flex justify-between items-center gap-1">
+        <div className="flex items-center gap-1">
+          <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-500">{label}</span>
+          {explanation && (
+            <div className="relative" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+              <Info className="w-2.5 h-2.5 text-zinc-400 cursor-help" />
+              <AnimatePresence>
+                {show && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 4, scale: 0.96 }}
+                    transition={{ duration: 0.15 }}
+                    className={`absolute z-50 bottom-full left-0 mb-1.5 w-52 p-2.5 rounded-xl border text-[10px] leading-relaxed shadow-xl ${
+                      theme === 'dark'
+                        ? 'bg-zinc-900 border-zinc-700 text-zinc-300'
+                        : 'bg-white border-zinc-200 text-zinc-600'
+                    }`}
+                  >
+                    {explanation}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+        </div>
+        <span className={`text-[10px] font-bold ${scoreColor(value)}`}>{value}%</span>
+      </div>
+      <div className="h-1 w-full rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+        <motion.div
+          className={`h-full rounded-full bg-gradient-to-r ${color}`}
+          initial={{ width: 0 }}
+          animate={{ width: `${value}%` }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+        />
+      </div>
+    </div>
+  );
+}
+
 function MiniBar({ label, value, color }: { label: string; value: number; color: string }) {
   return (
     <div className="space-y-1">
@@ -156,11 +217,329 @@ function MiniBar({ label, value, color }: { label: string; value: number; color:
   );
 }
 
+// ─── Status Badge ─────────────────────────────────────────────────────────────
+
+function StatusBadge({ status, theme }: { status: CandidateStatus; theme: string }) {
+  if (!status) return null;
+  const configs = {
+    shortlisted: { label: 'Shortlisted', color: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-500' },
+    maybe: { label: 'Maybe', color: 'bg-amber-500/15 border-amber-500/30 text-amber-500' },
+    rejected: { label: 'Rejected', color: 'bg-rose-500/15 border-rose-500/30 text-rose-500' },
+  };
+  const { label, color } = configs[status];
+  return (
+    <span className={`text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-lg border ${color}`}>
+      {label}
+    </span>
+  );
+}
+
+// ─── Comparison Modal ─────────────────────────────────────────────────────────
+
+function CompareModal({ a, b, onClose, theme }: { a: ScreeningResult; b: ScreeningResult; onClose: () => void; theme: string }) {
+  const scoreRows = [
+    { label: 'Composite', ka: a.composite_score, kb: b.composite_score },
+    { label: 'JD Match', ka: a.match_percentage, kb: b.match_percentage },
+    { label: 'Keywords', ka: a.keyword_score, kb: b.keyword_score },
+    { label: 'Semantic', ka: a.cosine_score, kb: b.cosine_score },
+    { label: 'ATS', ka: a.ats_score, kb: b.ats_score },
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <motion.div
+        initial={{ scale: 0.92, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.92, y: 20 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+        onClick={(e) => e.stopPropagation()}
+        className={`relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl border shadow-2xl ${
+          theme === 'dark' ? 'bg-zinc-950 border-zinc-800' : 'bg-white border-zinc-200'
+        }`}
+      >
+        {/* Header */}
+        <div className={`sticky top-0 z-10 flex items-center justify-between p-5 border-b ${
+          theme === 'dark' ? 'bg-zinc-950 border-zinc-800' : 'bg-white border-zinc-100'
+        }`}>
+          <div className="flex items-center gap-2">
+            <GitCompare className="w-4 h-4 text-purple-500" />
+            <span className={`text-sm font-semibold ${theme === 'dark' ? 'text-zinc-100' : 'text-zinc-900'}`}>
+              Candidate Comparison
+            </span>
+          </div>
+          <button onClick={onClose} className={`p-1.5 rounded-lg transition-colors ${
+            theme === 'dark' ? 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800' : 'text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100'
+          }`}>
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="p-5">
+          {/* Names */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            {[a, b].map((r, i) => (
+              <div key={i} className={`rounded-xl p-4 border ${
+                theme === 'dark' ? 'bg-zinc-900 border-zinc-800' : 'bg-zinc-50 border-zinc-200'
+              }`}>
+                <div className="flex items-center gap-2 mb-1">
+                  {getRankBadge(r.rank, theme)}
+                  <div>
+                    <p className={`text-sm font-semibold ${theme === 'dark' ? 'text-zinc-100' : 'text-zinc-900'}`}>
+                      {r.candidate_name !== 'Unknown' ? r.candidate_name : r.filename}
+                    </p>
+                    {r.email && <p className="text-[10px] text-zinc-500">{r.email}</p>}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <ScoreRing score={r.composite_score} size={48} />
+                  <div className="absolute" style={{ position: 'relative' }}>
+                    <span className={`text-2xl font-bold ${scoreColor(r.composite_score)}`}>{r.composite_score}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Score Comparison Rows */}
+          <div className={`rounded-xl border overflow-hidden mb-6 ${
+            theme === 'dark' ? 'border-zinc-800' : 'border-zinc-200'
+          }`}>
+            <div className={`grid grid-cols-3 px-4 py-2 text-[10px] font-bold uppercase tracking-widest border-b ${
+              theme === 'dark' ? 'bg-zinc-900 border-zinc-800 text-zinc-500' : 'bg-zinc-50 border-zinc-200 text-zinc-400'
+            }`}>
+              <span>{a.candidate_name !== 'Unknown' ? a.candidate_name : a.filename}</span>
+              <span className="text-center">Metric</span>
+              <span className="text-right">{b.candidate_name !== 'Unknown' ? b.candidate_name : b.filename}</span>
+            </div>
+            {scoreRows.map(({ label, ka, kb }) => (
+              <div key={label} className={`grid grid-cols-3 items-center px-4 py-2.5 border-b last:border-0 ${
+                theme === 'dark' ? 'border-zinc-800' : 'border-zinc-100'
+              }`}>
+                <span className={`text-sm font-bold ${scoreColor(ka)} ${ka >= kb ? 'opacity-100' : 'opacity-50'}`}>{ka}%</span>
+                <span className={`text-center text-[10px] font-medium ${theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'}`}>{label}</span>
+                <span className={`text-right text-sm font-bold ${scoreColor(kb)} ${kb >= ka ? 'opacity-100' : 'opacity-50'}`}>{kb}%</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Keyword Diff */}
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { r: a, label: `Only in ${a.candidate_name !== 'Unknown' ? a.candidate_name : 'Candidate A'}` },
+              { r: b, label: `Only in ${b.candidate_name !== 'Unknown' ? b.candidate_name : 'Candidate B'}` },
+            ].map(({ r, label }) => {
+              const other = r === a ? b : a;
+              const unique = r.matched_keywords.filter(k => !other.matched_keywords.includes(k));
+              return (
+                <div key={label}>
+                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'}`}>{label}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {unique.length === 0
+                      ? <span className="text-[10px] text-zinc-500">No unique matches</span>
+                      : unique.map(k => (
+                        <span key={k} className="text-[10px] px-2 py-0.5 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-500 font-medium">{k}</span>
+                      ))
+                    }
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ─── Batch Analytics Panel ────────────────────────────────────────────────────
+
+function BatchAnalytics({ results, theme }: { results: ScreeningResult[]; theme: string }) {
+  const [open, setOpen] = useState(false);
+
+  const histogram = useMemo(() => {
+    const buckets = [
+      { range: '0–20', min: 0, max: 20, count: 0 },
+      { range: '21–40', min: 21, max: 40, count: 0 },
+      { range: '41–60', min: 41, max: 60, count: 0 },
+      { range: '61–80', min: 61, max: 80, count: 0 },
+      { range: '81–100', min: 81, max: 100, count: 0 },
+    ];
+    results.forEach(r => {
+      const b = buckets.find(b => r.composite_score >= b.min && r.composite_score <= b.max);
+      if (b) b.count++;
+    });
+    return buckets;
+  }, [results]);
+
+  const topMissingKeywords = useMemo(() => {
+    const freq: Record<string, number> = {};
+    results.forEach(r => r.missing_keywords.forEach(k => { freq[k] = (freq[k] || 0) + 1; }));
+    return Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  }, [results]);
+
+  const avgCategoryScores = useMemo(() => {
+    const totals: Record<string, { sum: number; count: number }> = {};
+    results.forEach(r => {
+      Object.entries(r.skill_categories || {}).forEach(([cat, data]) => {
+        if (!totals[cat]) totals[cat] = { sum: 0, count: 0 };
+        totals[cat].sum += data.coverage_pct;
+        totals[cat].count++;
+      });
+    });
+    return Object.entries(totals).map(([cat, { sum, count }]) => ({
+      cat,
+      avg: Math.round(sum / count),
+    })).sort((a, b) => b.avg - a.avg);
+  }, [results]);
+
+  const cardCls = `rounded-2xl border p-5 ${theme === 'dark' ? 'bg-zinc-900/80 border-zinc-800' : 'bg-white border-zinc-200'}`;
+
+  return (
+    <div className={`rounded-2xl border overflow-hidden ${theme === 'dark' ? 'border-zinc-800' : 'border-zinc-200'}`}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        className={`w-full flex items-center justify-between px-5 py-3.5 text-left transition-colors ${
+          theme === 'dark' ? 'bg-zinc-900/80 hover:bg-zinc-800/60' : 'bg-zinc-50 hover:bg-zinc-100'
+        }`}
+      >
+        <div className="flex items-center gap-2">
+          <BarChart3 className="w-4 h-4 text-purple-500" />
+          <span className={`text-xs font-semibold ${theme === 'dark' ? 'text-zinc-200' : 'text-zinc-800'}`}>
+            Batch Analytics
+          </span>
+          <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-md border ${
+            theme === 'dark' ? 'bg-purple-500/10 border-purple-500/20 text-purple-400' : 'bg-purple-50 border-purple-200 text-purple-600'
+          }`}>
+            {results.length} candidates
+          </span>
+        </div>
+        {open ? <ChevronUp className="w-3.5 h-3.5 text-zinc-500" /> : <ChevronDown className="w-3.5 h-3.5 text-zinc-500" />}
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
+          >
+            <div className={`p-5 border-t ${theme === 'dark' ? 'border-zinc-800' : 'border-zinc-100'}`}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {/* Score Distribution Histogram */}
+                <div>
+                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'}`}>
+                    Score Distribution
+                  </p>
+                  <div className="h-32">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={histogram} barSize={20}>
+                        <XAxis dataKey="range" tick={{ fontSize: 8, fill: theme === 'dark' ? '#71717a' : '#a1a1aa' }} />
+                        <YAxis allowDecimals={false} tick={{ fontSize: 8, fill: theme === 'dark' ? '#71717a' : '#a1a1aa' }} />
+                        <Tooltip
+                          contentStyle={{
+                            fontSize: '10px',
+                            background: theme === 'dark' ? '#18181b' : '#ffffff',
+                            border: `1px solid ${theme === 'dark' ? '#27272a' : '#e4e4e7'}`,
+                            color: theme === 'dark' ? '#f4f4f5' : '#18181b',
+                            borderRadius: '8px',
+                          }}
+                          formatter={(v: number) => [`${v} candidates`, 'Count']}
+                        />
+                        <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+                          {histogram.map((b, i) => (
+                            <Cell
+                              key={i}
+                              fill={b.min >= 61 ? '#10b981' : b.min >= 41 ? '#f59e0b' : '#f43f5e'}
+                              opacity={0.8}
+                            />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Top Missing Keywords */}
+                <div>
+                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'}`}>
+                    Most Missing Keywords
+                  </p>
+                  <div className="space-y-2">
+                    {topMissingKeywords.length === 0
+                      ? <p className="text-[10px] text-zinc-500">No data</p>
+                      : topMissingKeywords.map(([kw, count]) => (
+                        <div key={kw} className="flex items-center gap-2">
+                          <span className={`text-[10px] flex-1 truncate font-medium ${theme === 'dark' ? 'text-zinc-300' : 'text-zinc-700'}`}>{kw}</span>
+                          <div className="flex items-center gap-1">
+                            <div className="h-1 rounded-full bg-rose-500/30 overflow-hidden" style={{ width: '40px' }}>
+                              <div
+                                className="h-full rounded-full bg-rose-500"
+                                style={{ width: `${(count / results.length) * 100}%` }}
+                              />
+                            </div>
+                            <span className="text-[9px] text-rose-500 font-bold w-5 text-right">{count}</span>
+                          </div>
+                        </div>
+                      ))
+                    }
+                  </div>
+                </div>
+
+                {/* Avg Category Scores */}
+                <div>
+                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'}`}>
+                    Avg Skill Category Coverage
+                  </p>
+                  <div className="space-y-2">
+                    {avgCategoryScores.length === 0
+                      ? <p className="text-[10px] text-zinc-500">No category data</p>
+                      : avgCategoryScores.map(({ cat, avg }) => (
+                        <MiniBar
+                          key={cat}
+                          label={cat}
+                          value={avg}
+                          color={avg >= 70 ? 'from-emerald-500 to-emerald-400' : avg >= 40 ? 'from-amber-500 to-amber-400' : 'from-rose-500 to-rose-400'}
+                        />
+                      ))
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ─── Result Card ──────────────────────────────────────────────────────────────
 
-function ResultCard({ result, theme }: { result: ScreeningResult; theme: string }) {
+function ResultCard({
+  result, theme, isSelected, onToggleSelect, compareMode, onCompare,
+  status, onSetStatus,
+}: {
+  result: ScreeningResult;
+  theme: string;
+  isSelected: boolean;
+  onToggleSelect: () => void;
+  compareMode: boolean;
+  onCompare?: () => void;
+  status: CandidateStatus;
+  onSetStatus: (s: CandidateStatus) => void;
+}) {
   const [expanded, setExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState<'keywords' | 'breakdown' | 'suggestions'>('keywords');
+  const [copied, setCopied] = useState(false);
 
   const radarData = [
     { subject: 'Keywords', value: result.keyword_score },
@@ -182,13 +561,26 @@ function ResultCard({ result, theme }: { result: ScreeningResult; theme: string 
 
   const isTop = result.rank === 1;
 
+  const copyEmail = () => {
+    if (!result.email) return;
+    navigator.clipboard.writeText(result.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  const statusCycle: CandidateStatus[] = ['shortlisted', 'maybe', 'rejected', null];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: result.rank * 0.06 }}
       className={`rounded-2xl border overflow-hidden transition-all ${
-        isTop
+        isSelected
+          ? theme === 'dark'
+            ? 'border-purple-500/50 shadow-lg shadow-purple-500/5 bg-zinc-900/80'
+            : 'border-purple-300 shadow-lg shadow-purple-100 bg-white'
+          : isTop
           ? theme === 'dark'
             ? 'border-yellow-500/30 shadow-lg shadow-yellow-500/5 bg-zinc-900/80'
             : 'border-yellow-300 shadow-lg shadow-yellow-100 bg-white'
@@ -198,12 +590,25 @@ function ResultCard({ result, theme }: { result: ScreeningResult; theme: string 
       }`}
     >
       {/* Top bar for #1 */}
-      {isTop && (
+      {isTop && !isSelected && (
         <div className="h-0.5 w-full bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-400" />
+      )}
+      {isSelected && (
+        <div className="h-0.5 w-full bg-gradient-to-r from-purple-500 via-violet-400 to-purple-500" />
       )}
 
       {/* Card Header */}
       <div className="p-5 flex items-start gap-4">
+        {/* Select checkbox */}
+        <button
+          onClick={onToggleSelect}
+          className={`shrink-0 mt-0.5 transition-colors ${
+            isSelected ? 'text-purple-500' : theme === 'dark' ? 'text-zinc-600 hover:text-zinc-400' : 'text-zinc-300 hover:text-zinc-500'
+          }`}
+        >
+          {isSelected ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+        </button>
+
         {/* Rank */}
         {getRankBadge(result.rank, theme)}
 
@@ -229,12 +634,23 @@ function ResultCard({ result, theme }: { result: ScreeningResult; theme: string 
               }`}>
                 {result.candidate_name !== 'Unknown' ? result.candidate_name : result.filename}
               </h3>
-              {result.email && (
-                <span className="text-[10px] text-zinc-500 dark:text-zinc-500 truncate max-w-[140px]">
+              <StatusBadge status={status} theme={theme} />
+            </div>
+            {result.email && (
+              <button
+                onClick={copyEmail}
+                className="flex items-center gap-1 mt-0.5 group"
+                title="Copy email"
+              >
+                <span className="text-[10px] text-zinc-500 group-hover:text-purple-400 transition-colors truncate max-w-[180px]">
                   {result.email}
                 </span>
-              )}
-            </div>
+                {copied
+                  ? <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
+                  : <Copy className="w-2.5 h-2.5 text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                }
+              </button>
+            )}
             <p className="text-[10px] text-zinc-500 truncate mt-0.5">{result.filename}</p>
           </div>
 
@@ -266,8 +682,9 @@ function ResultCard({ result, theme }: { result: ScreeningResult; theme: string 
           </div>
         </div>
 
-        {/* Match % Badge + Expand */}
+        {/* Right side controls */}
         <div className="flex flex-col items-end gap-2 shrink-0">
+          {/* Match % */}
           <div className={`text-center px-3 py-1.5 rounded-xl border ${
             result.match_percentage >= 70
               ? theme === 'dark' ? 'border-emerald-500/30 bg-emerald-500/10' : 'border-emerald-200 bg-emerald-50'
@@ -282,17 +699,52 @@ function ResultCard({ result, theme }: { result: ScreeningResult; theme: string 
               theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
             }`}>Match</div>
           </div>
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className={`p-1.5 rounded-lg transition-colors ${
-              theme === 'dark'
-                ? 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800'
-                : 'text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100'
-            }`}
-            aria-label="Toggle details"
-          >
-            {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </button>
+
+          {/* Status Cycle Button */}
+          <div className="flex gap-1">
+            <button
+              onClick={() => {
+                const cur = statusCycle.indexOf(status);
+                onSetStatus(statusCycle[(cur + 1) % statusCycle.length]);
+              }}
+              title="Cycle status"
+              className={`p-1 rounded-lg transition-colors text-[10px] font-bold ${
+                theme === 'dark'
+                  ? 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800'
+                  : 'text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100'
+              }`}
+            >
+              <Tag className="w-3.5 h-3.5" />
+            </button>
+
+            {/* Compare button */}
+            {compareMode && (
+              <button
+                onClick={onCompare}
+                title="Compare"
+                className={`p-1 rounded-lg transition-colors ${
+                  theme === 'dark'
+                    ? 'text-purple-400 hover:text-purple-300 hover:bg-purple-500/10'
+                    : 'text-purple-500 hover:text-purple-700 hover:bg-purple-50'
+                }`}
+              >
+                <GitCompare className="w-3.5 h-3.5" />
+              </button>
+            )}
+
+            {/* Expand */}
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className={`p-1.5 rounded-lg transition-colors ${
+                theme === 'dark'
+                  ? 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800'
+                  : 'text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100'
+              }`}
+              aria-label="Toggle details"
+            >
+              {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -465,7 +917,7 @@ function ResultCard({ result, theme }: { result: ScreeningResult; theme: string 
 
                 {activeTab === 'breakdown' && (
                   <div className="space-y-4">
-                    {/* Score breakdown bars */}
+                    {/* Score breakdown bars with tooltips */}
                     <div className="space-y-3">
                       {[
                         { label: 'Composite Score', value: result.composite_score, color: 'from-purple-500 to-purple-400' },
@@ -475,7 +927,7 @@ function ResultCard({ result, theme }: { result: ScreeningResult; theme: string 
                         { label: 'Phrase Match', value: result.phrase_score, color: 'from-teal-500 to-teal-400' },
                         { label: 'ATS Score', value: result.ats_score, color: 'from-emerald-500 to-emerald-400' },
                       ].map(({ label, value, color }) => (
-                        <MiniBar key={label} label={label} value={value} color={color} />
+                        <ScoreTooltip key={label} label={label} value={value} color={color} theme={theme} />
                       ))}
                     </div>
 
@@ -560,6 +1012,13 @@ export default function ResumeScreening() {
   const [sortKey, setSortKey] = useState<SortKey>('composite_score');
   const [minScore, setMinScore] = useState(0);
 
+  // New feature states
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [compareTargets, setCompareTargets] = useState<[ScreeningResult, ScreeningResult] | null>(null);
+  const [candidateStatuses, setCandidateStatuses] = useState<Record<string, CandidateStatus>>({});
+  const [searchQuery, setSearchQuery] = useState('');
+  const [copiedEmails, setCopiedEmails] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // ── File management ───────────────────────────────────────────────────────
@@ -586,17 +1045,20 @@ export default function ResumeScreening() {
     if (e.dataTransfer.files) addFiles(e.dataTransfer.files);
   }, [addFiles]);
 
-  // ── Export CSV ────────────────────────────────────────────────────────────
+  // ── Export CSV (all) ──────────────────────────────────────────────────────
 
-  const exportCSV = () => {
+  const exportCSV = (resultsToExport?: ScreeningResult[]) => {
     if (!response) return;
+    const data = resultsToExport || response.results;
     const headers = [
-      'Rank', 'Candidate', 'File', 'Composite Score', 'JD Match %',
+      'Rank', 'Candidate', 'Email', 'File', 'Status', 'Composite Score', 'JD Match %',
       'Keyword Score', 'Semantic Score', 'Phrase Score', 'ATS Score',
       'Matched Keywords', 'Missing Keywords'
     ];
-    const rows = response.results.map((r) => [
-      r.rank, r.candidate_name, r.filename, r.composite_score,
+    const rows = data.map((r) => [
+      r.rank, r.candidate_name, r.email, r.filename,
+      candidateStatuses[r.filename] || 'unreviewed',
+      r.composite_score,
       r.match_percentage, r.keyword_score, r.cosine_score,
       r.phrase_score, r.ats_score,
       `"${r.matched_keywords.join('; ')}"`,
@@ -607,9 +1069,22 @@ export default function ResumeScreening() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'resume_screening_results.csv';
+    a.download = resultsToExport ? 'shortlisted_candidates.csv' : 'resume_screening_results.csv';
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  // ── Copy shortlisted emails ───────────────────────────────────────────────
+
+  const copyShortlistedEmails = () => {
+    if (!response) return;
+    const emails = response.results
+      .filter(r => selectedIds.has(r.filename) && r.email)
+      .map(r => r.email)
+      .join(', ');
+    navigator.clipboard.writeText(emails);
+    setCopiedEmails(true);
+    setTimeout(() => setCopiedEmails(false), 2000);
   };
 
   // ── Submit ────────────────────────────────────────────────────────────────
@@ -618,6 +1093,9 @@ export default function ResumeScreening() {
     e.preventDefault();
     setFormError(null);
     setResponse(null);
+    setSelectedIds(new Set());
+    setCandidateStatuses({});
+    setSearchQuery('');
 
     if (files.length === 0) { setFormError('Upload at least one resume.'); return; }
     if (jdText.trim().length < 50) { setFormError('Job description must be at least 50 characters.'); return; }
@@ -643,12 +1121,39 @@ export default function ResumeScreening() {
 
   // ── Derived sorted + filtered results ─────────────────────────────────────
 
-  const sortedResults = response
-    ? [...response.results]
-        .filter((r) => r.composite_score >= minScore)
-        .sort((a, b) => b[sortKey] - a[sortKey])
-        .map((r, i) => ({ ...r, rank: i + 1 }))
-    : [];
+  const sortedResults = useMemo(() => {
+    if (!response) return [];
+    return [...response.results]
+      .filter((r) => r.composite_score >= minScore)
+      .filter((r) => {
+        if (!searchQuery.trim()) return true;
+        const q = searchQuery.toLowerCase();
+        return (
+          r.candidate_name.toLowerCase().includes(q) ||
+          r.filename.toLowerCase().includes(q) ||
+          r.email.toLowerCase().includes(q)
+        );
+      })
+      .sort((a, b) => b[sortKey] - a[sortKey])
+      .map((r, i) => ({ ...r, rank: i + 1 }));
+  }, [response, minScore, sortKey, searchQuery]);
+
+  const selectedResults = useMemo(
+    () => sortedResults.filter(r => selectedIds.has(r.filename)),
+    [sortedResults, selectedIds]
+  );
+
+  const compareMode = selectedIds.size === 1;
+  const canExportShortlist = selectedIds.size > 0;
+
+  // ── Compare handler ───────────────────────────────────────────────────────
+
+  const handleCompare = (result: ScreeningResult) => {
+    const first = sortedResults.find(r => selectedIds.has(r.filename));
+    if (first && first.filename !== result.filename) {
+      setCompareTargets([first, result]);
+    }
+  };
 
   // ── Render ────────────────────────────────────────────────────────────────
 
@@ -886,8 +1391,12 @@ export default function ResumeScreening() {
                 ))}
               </div>
 
+              {/* Batch Analytics */}
+              <BatchAnalytics results={response.results} theme={theme} />
+
               {/* Controls */}
               <div className={`flex flex-wrap items-center justify-between gap-3`}>
+                {/* Sort + Search */}
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className={`text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 ${
                     theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
@@ -915,7 +1424,29 @@ export default function ResumeScreening() {
                   ))}
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap">
+                  {/* Search */}
+                  <div className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 ${
+                    theme === 'dark' ? 'border-zinc-800 bg-zinc-900/40' : 'border-zinc-200 bg-white'
+                  }`}>
+                    <Search className="w-3 h-3 text-zinc-400" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                      placeholder="Search candidates…"
+                      className={`text-[10px] w-28 bg-transparent outline-none ${
+                        theme === 'dark' ? 'text-zinc-300 placeholder-zinc-600' : 'text-zinc-700 placeholder-zinc-400'
+                      }`}
+                    />
+                    {searchQuery && (
+                      <button onClick={() => setSearchQuery('')}>
+                        <X className="w-3 h-3 text-zinc-400" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Min score filter */}
                   <div className="flex items-center gap-2">
                     <Filter className={`w-3 h-3 ${
                       theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
@@ -927,7 +1458,9 @@ export default function ResumeScreening() {
                       onChange={(e) => setMinScore(Number(e.target.value))}
                       className="w-20 accent-purple-500" />
                   </div>
-                  <button onClick={exportCSV}
+
+                  {/* Export CSV */}
+                  <button onClick={() => exportCSV()}
                     className={`flex items-center gap-1.5 text-[10px] font-semibold px-3 py-1.5 rounded-lg border transition-all ${
                       theme === 'dark'
                         ? 'border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
@@ -938,17 +1471,97 @@ export default function ResumeScreening() {
                 </div>
               </div>
 
+              {/* Shortlist Action Bar */}
+              <AnimatePresence>
+                {canExportShortlist && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2 }}
+                    className={`flex items-center justify-between gap-3 rounded-xl border p-3 ${
+                      theme === 'dark'
+                        ? 'bg-purple-500/5 border-purple-500/20'
+                        : 'bg-purple-50 border-purple-200'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <CheckSquare className="w-3.5 h-3.5 text-purple-500" />
+                      <span className={`text-[10px] font-semibold ${
+                        theme === 'dark' ? 'text-purple-300' : 'text-purple-700'
+                      }`}>
+                        {selectedIds.size} candidate{selectedIds.size > 1 ? 's' : ''} selected
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {compareMode && (
+                        <span className={`text-[10px] ${theme === 'dark' ? 'text-zinc-400' : 'text-zinc-500'}`}>
+                          Click <GitCompare className="w-3 h-3 inline" /> on another card to compare
+                        </span>
+                      )}
+                      <button
+                        onClick={copyShortlistedEmails}
+                        disabled={!selectedResults.some(r => r.email)}
+                        className={`flex items-center gap-1.5 text-[10px] font-semibold px-2.5 py-1.5 rounded-lg border transition-all disabled:opacity-40 ${
+                          theme === 'dark'
+                            ? 'border-zinc-700 text-zinc-300 hover:text-zinc-100 hover:border-zinc-600'
+                            : 'border-zinc-300 text-zinc-600 hover:text-zinc-800 hover:border-zinc-400'
+                        }`}
+                      >
+                        {copiedEmails ? <CheckCircle2 className="w-3 h-3 text-emerald-500" /> : <Clipboard className="w-3 h-3" />}
+                        {copiedEmails ? 'Copied!' : 'Copy Emails'}
+                      </button>
+                      <button
+                        onClick={() => exportCSV(selectedResults)}
+                        className={`flex items-center gap-1.5 text-[10px] font-semibold px-2.5 py-1.5 rounded-lg border transition-all ${
+                          theme === 'dark'
+                            ? 'bg-purple-500/20 border-purple-500/40 text-purple-300 hover:bg-purple-500/30'
+                            : 'bg-purple-100 border-purple-300 text-purple-700 hover:bg-purple-200'
+                        }`}
+                      >
+                        <Download className="w-3 h-3" /> Export Shortlist CSV
+                      </button>
+                      <button
+                        onClick={() => setSelectedIds(new Set())}
+                        className={`text-[10px] px-2 py-1.5 rounded-lg transition-colors ${
+                          theme === 'dark' ? 'text-zinc-500 hover:text-zinc-300' : 'text-zinc-400 hover:text-zinc-600'
+                        }`}
+                      >
+                        Clear
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {/* Candidate Cards */}
               {sortedResults.length === 0 ? (
                 <div className={`text-center py-10 text-xs ${
                   theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
                 }`}>
-                  No candidates above {minScore}% threshold. Lower the filter to see all results.
+                  No candidates found. Try adjusting the filter or search.
                 </div>
               ) : (
                 <div className="space-y-4">
                   {sortedResults.map((r) => (
-                    <ResultCard key={r.filename + r.rank} result={r} theme={theme} />
+                    <ResultCard
+                      key={r.filename + r.rank}
+                      result={r}
+                      theme={theme}
+                      isSelected={selectedIds.has(r.filename)}
+                      onToggleSelect={() => {
+                        setSelectedIds(prev => {
+                          const next = new Set(prev);
+                          if (next.has(r.filename)) next.delete(r.filename);
+                          else next.add(r.filename);
+                          return next;
+                        });
+                      }}
+                      compareMode={compareMode && !selectedIds.has(r.filename)}
+                      onCompare={() => handleCompare(r)}
+                      status={candidateStatuses[r.filename] ?? null}
+                      onSetStatus={(s) => setCandidateStatuses(prev => ({ ...prev, [r.filename]: s }))}
+                    />
                   ))}
                 </div>
               )}
@@ -997,6 +1610,18 @@ export default function ResumeScreening() {
           )}
         </div>
       </div>
+
+      {/* ── Compare Modal ── */}
+      <AnimatePresence>
+        {compareTargets && (
+          <CompareModal
+            a={compareTargets[0]}
+            b={compareTargets[1]}
+            onClose={() => setCompareTargets(null)}
+            theme={theme}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
