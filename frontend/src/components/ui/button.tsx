@@ -12,7 +12,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          "inline-flex items-center justify-center rounded-xl text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
+          "inline-flex items-center justify-center rounded-xl text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0ef6cc] disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
           {
             "bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-glow-purple hover:opacity-95":
               variant === "default",
@@ -24,9 +24,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               variant === "secondary",
             "text-slate-400 hover:bg-white/5 hover:text-white":
               variant === "ghost",
-            "text-purple-400 underline-offset-4 hover:underline":
+            "text-[#0ef6cc] underline-offset-4 hover:underline":
               variant === "link",
-            "relative bg-slate-900 border border-purple-500/30 text-purple-300 hover:text-white shadow-glow-purple hover:border-purple-400/50 hover:bg-purple-500/5":
+            "relative bg-slate-900 border border-cyan-500/30 text-purple-300 hover:text-white shadow-glow-purple hover:border-cyan-400/50 hover:bg-cyan-500/5":
               variant === "glow",
           },
           {

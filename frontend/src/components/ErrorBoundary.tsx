@@ -34,12 +34,12 @@ export default class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-[#050a14] text-[#e8f4f8] p-6">
-          <div className="flex flex-col items-center justify-center text-center p-8 max-w-sm mx-auto bg-zinc-900/50 border border-zinc-900 rounded-2xl">
-            <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-850 mb-4 text-rose-500">
+          <div className="flex flex-col items-center justify-center text-center p-8 max-w-sm mx-auto bg-[#0a1628]/50 border border-[#162340] rounded-2xl">
+            <div className="p-3.5 rounded-xl bg-[#050a14] border border-zinc-850 mb-4 text-rose-500">
               <AlertTriangle className="w-8 h-8" />
             </div>
-            <h3 className="text-sm font-semibold text-zinc-200 mb-1">Application Error</h3>
-            <p className="text-[11px] text-zinc-500 font-light leading-relaxed mb-6">
+            <h3 className="text-sm font-semibold text-[#c8ddf0] mb-1">Application Error</h3>
+            <p className="text-[11px] text-[#5d7a96] font-light leading-relaxed mb-6">
               A critical rendering or component initialization error occurred: {this.state.error?.message || "Please reload the page."}
             </p>
             <button

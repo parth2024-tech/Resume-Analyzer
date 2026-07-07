@@ -31,9 +31,9 @@ export default function ATSBreakdown({ data }: ATSBreakdownProps) {
   // Colors adapted for light/dark theme
   const tickColor = theme === 'dark' ? '#a1a1aa' : '#52525b';
   const gridColor = theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)';
-  const tooltipBg = theme === 'dark' ? '#18181b' : '#ffffff';
+  const tooltipBg = theme === 'dark' ? '#0a1628' : '#ffffff';
   const tooltipBorder = theme === 'dark' ? '#27272a' : '#e4e4e7';
-  const tooltipText = theme === 'dark' ? '#f4f4f5' : '#18181b';
+  const tooltipText = theme === 'dark' ? '#e8f4f8' : '#0a1628';
 
   return (
     <div className="w-full h-[260px] text-left">

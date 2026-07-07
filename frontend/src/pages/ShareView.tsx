@@ -79,13 +79,13 @@ export default function ShareView() {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center max-w-md mx-auto py-12">
-        <div className="p-4 rounded-2xl bg-[#F4F4F5] dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 mb-6 text-rose-600 dark:text-rose-500">
+        <div className="p-4 rounded-2xl bg-[#e8f4f8] dark:bg-[#0a1628] border border-[#c8ddf0] dark:border-[#1e3a5f] mb-6 text-rose-600 dark:text-rose-500">
           <AlertTriangle className="w-8 h-8" />
         </div>
-        <h2 className="text-xl font-medium tracking-tight text-[#09090B] dark:text-zinc-200 mb-2">{error}</h2>
+        <h2 className="text-xl font-medium tracking-tight text-[#050a14] dark:text-[#c8ddf0] mb-2">{error}</h2>
         <button
           onClick={() => navigate('/')}
-          className="inline-flex items-center justify-center gap-2 rounded-xl text-xs font-semibold bg-[#09090B] text-white hover:bg-[#18181b] dark:bg-zinc-100 dark:text-zinc-955 dark:hover:bg-zinc-200 transition-colors h-10 px-5"
+          className="inline-flex items-center justify-center gap-2 rounded-xl text-xs font-semibold bg-[#050a14] text-white hover:bg-[#0a1628] dark:bg-zinc-100 dark:text-zinc-955 dark:hover:bg-zinc-200 transition-colors h-10 px-5"
         >
           Return Home
         </button>
@@ -97,10 +97,10 @@ export default function ShareView() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center max-w-md mx-auto py-12">
         <div className="relative flex items-center justify-center w-10 h-10 mb-4">
-          <span className="absolute inline-flex h-full w-full rounded-full bg-zinc-100 dark:bg-zinc-800 animate-ping opacity-75"></span>
+          <span className="absolute inline-flex h-full w-full rounded-full bg-zinc-100 dark:bg-[#1e3a5f]/40 animate-ping opacity-75"></span>
           <div className="relative w-6 h-6 rounded-full border border-zinc-300 border-t-zinc-600 dark:border-zinc-700 dark:border-t-zinc-300 animate-spin"></div>
         </div>
-        <p className="text-[#71717A] dark:text-zinc-400 text-xs font-light">Retrieving shared report credentials...</p>
+        <p className="text-[#5d7a96] dark:text-[#7a9db8] text-xs font-light">Retrieving shared report credentials...</p>
       </div>
     );
   }
@@ -116,24 +116,24 @@ export default function ShareView() {
   return (
     <div className="space-y-10 text-left pt-6 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-6 border-b border-zinc-200 dark:border-zinc-900/60">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-6 border-b border-[#c8ddf0] dark:border-[#162340]/60">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900/40 text-[10px] font-medium text-[#71717A] dark:text-zinc-500 mb-3">
-            <Cpu className="w-3.5 h-3.5 text-purple-655 dark:text-purple-400" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-[#c8ddf0] dark:border-[#1e3a5f] bg-[#e8f4f8] dark:bg-[#0a1628]/40 text-[10px] font-medium text-[#5d7a96] dark:text-[#5d7a96] mb-3">
+            <Cpu className="w-3.5 h-3.5 text-purple-655 dark:text-[#0ef6cc]" />
             <span>Shared Read-Only Report</span>
           </div>
-          <h2 className="text-2xl font-semibold tracking-tight text-[#09090B] dark:text-zinc-100">{profile.name}</h2>
-          <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-2 text-xs text-[#71717A] dark:text-zinc-500 font-light">
-            <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5 text-[#71717A] dark:text-zinc-400" /> {profile.email}</span>
+          <h2 className="text-2xl font-semibold tracking-tight text-[#050a14] dark:text-[#e8f4f8]">{profile.name}</h2>
+          <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-2 text-xs text-[#5d7a96] dark:text-[#5d7a96] font-light">
+            <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5 text-[#5d7a96] dark:text-[#7a9db8]" /> {profile.email}</span>
             {profile.phone && (
-              <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-[#71717A] dark:text-zinc-400" /> {profile.phone}</span>
+              <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-[#5d7a96] dark:text-[#7a9db8]" /> {profile.phone}</span>
             )}
           </div>
         </div>
 
         <button
           onClick={() => navigate('/')}
-          className="inline-flex items-center justify-center gap-2 rounded-xl text-xs font-semibold bg-[#09090B] text-white hover:bg-[#18181b] dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-zinc-200 transition-all h-9 px-4 active:scale-95 shadow-sm"
+          className="inline-flex items-center justify-center gap-2 rounded-xl text-xs font-semibold bg-[#050a14] text-white hover:bg-[#0a1628] dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-zinc-200 transition-all h-9 px-4 active:scale-95 shadow-sm"
         >
           Create Your Own Report
         </button>
@@ -142,10 +142,10 @@ export default function ShareView() {
       {/* Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         {/* Circular SVG Gauge */}
-        <div className="lg:col-span-4 bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-900 rounded-2xl p-6 flex flex-col justify-between min-h-[320px] relative overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+        <div className="lg:col-span-4 bg-white dark:bg-[#0a1628]/80 border border-[#c8ddf0] dark:border-[#162340] rounded-2xl p-6 flex flex-col justify-between min-h-[320px] relative overflow-hidden shadow-sm hover:shadow-md transition-shadow">
           <div>
-            <span className="text-[10px] font-bold text-[#71717A] dark:text-zinc-500 uppercase tracking-widest block">ATS Rating</span>
-            <span className="text-xs text-[#71717A] dark:text-zinc-400 font-light">Compliance rating grade</span>
+            <span className="text-[10px] font-bold text-[#5d7a96] dark:text-[#5d7a96] uppercase tracking-widest block">ATS Rating</span>
+            <span className="text-xs text-[#5d7a96] dark:text-[#7a9db8] font-light">Compliance rating grade</span>
           </div>
 
           <div className="flex justify-center items-center py-6">
@@ -155,7 +155,7 @@ export default function ShareView() {
                   cx="60"
                   cy="60"
                   r={radius}
-                  stroke={theme === 'dark' ? '#18181b' : '#e4e4e7'}
+                  stroke={theme === 'dark' ? '#0a1628' : '#e4e4e7'}
                   strokeWidth="8"
                   fill="transparent"
                 />
@@ -173,50 +173,50 @@ export default function ShareView() {
               </svg>
               <div className="absolute flex flex-col items-center">
                 <span className={`text-3xl font-semibold tracking-tight ${scoreClass}`}>{ats_score}</span>
-                <span className="text-[9px] text-[#71717A] dark:text-zinc-500 uppercase font-semibold tracking-widest mt-0.5">Grade</span>
+                <span className="text-[9px] text-[#5d7a96] dark:text-[#5d7a96] uppercase font-semibold tracking-widest mt-0.5">Grade</span>
               </div>
             </div>
           </div>
 
-          <div className="text-xs text-[#71717A] dark:text-zinc-500 font-light leading-relaxed pt-2 border-t border-zinc-200 dark:border-zinc-900/40">
+          <div className="text-xs text-[#5d7a96] dark:text-[#5d7a96] font-light leading-relaxed pt-2 border-t border-[#c8ddf0] dark:border-[#162340]/40">
             Automated structure rating parsed using custom recruiter models.
           </div>
         </div>
 
         {/* Strengths & Gaps */}
         <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-          <div className="bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-900 rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="bg-white dark:bg-[#0a1628]/80 border border-[#c8ddf0] dark:border-[#162340] rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
             <div className="space-y-4">
-              <div className="flex items-center gap-2 pb-3 border-b border-zinc-200 dark:border-zinc-900/60">
+              <div className="flex items-center gap-2 pb-3 border-b border-[#c8ddf0] dark:border-[#162340]/60">
                 <div className="p-1 rounded bg-emerald-55 border border-emerald-250 text-emerald-650 dark:bg-emerald-950/20 dark:border-emerald-900/50 dark:text-emerald-400">
                   <Check className="w-3.5 h-3.5" />
                 </div>
-                <h3 className="text-xs font-bold text-[#09090B] dark:text-zinc-355 uppercase tracking-widest">Strengths</h3>
+                <h3 className="text-xs font-bold text-[#050a14] dark:text-zinc-355 uppercase tracking-widest">Strengths</h3>
               </div>
               <div className="space-y-3.5">
                 {insights.strengths.map((strength, i) => (
                   <div key={i} className="flex gap-2.5 items-start">
-                    <CornerDownRight className="w-3.5 h-3.5 text-[#71717A] dark:text-zinc-655 shrink-0 mt-0.5" />
-                    <p className="text-xs text-[#71717A] dark:text-zinc-400 font-light leading-relaxed">{strength}</p>
+                    <CornerDownRight className="w-3.5 h-3.5 text-[#5d7a96] dark:text-zinc-655 shrink-0 mt-0.5" />
+                    <p className="text-xs text-[#5d7a96] dark:text-[#7a9db8] font-light leading-relaxed">{strength}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-900 rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="bg-white dark:bg-[#0a1628]/80 border border-[#c8ddf0] dark:border-[#162340] rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
             <div className="space-y-4">
-              <div className="flex items-center gap-2 pb-3 border-b border-zinc-200 dark:border-zinc-900/60">
+              <div className="flex items-center gap-2 pb-3 border-b border-[#c8ddf0] dark:border-[#162340]/60">
                 <div className="p-1 rounded bg-rose-50 border border-rose-250 text-rose-600 dark:bg-rose-955/20 dark:border-rose-900/50 dark:text-rose-400">
                   <AlertTriangle className="w-3.5 h-3.5" />
                 </div>
-                <h3 className="text-xs font-bold text-[#09090B] dark:text-zinc-355 uppercase tracking-widest">Gaps</h3>
+                <h3 className="text-xs font-bold text-[#050a14] dark:text-zinc-355 uppercase tracking-widest">Gaps</h3>
               </div>
               <div className="space-y-3.5">
                 {insights.weaknesses.map((weakness, i) => (
                   <div key={i} className="flex gap-2.5 items-start">
                     <div className="h-1.5 w-1.5 rounded-full bg-rose-500/50 shrink-0 mt-1.5" />
-                    <p className="text-xs text-[#71717A] dark:text-zinc-400 font-light leading-relaxed">{weakness}</p>
+                    <p className="text-xs text-[#5d7a96] dark:text-[#7a9db8] font-light leading-relaxed">{weakness}</p>
                   </div>
                 ))}
               </div>
@@ -226,23 +226,23 @@ export default function ShareView() {
       </div>
 
       {/* Skills */}
-      <section className="bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div className="pb-3 border-b border-zinc-200 dark:border-zinc-900/60 mb-5">
-          <span className="text-[10px] font-bold text-[#71717A] dark:text-zinc-500 uppercase tracking-widest block">Skills</span>
+      <section className="bg-white dark:bg-[#0a1628]/80 border border-[#c8ddf0] dark:border-[#162340] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div className="pb-3 border-b border-[#c8ddf0] dark:border-[#162340]/60 mb-5">
+          <span className="text-[10px] font-bold text-[#5d7a96] dark:text-[#5d7a96] uppercase tracking-widest block">Skills</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {profile.skills.map((skill, i) => (
-            <span key={i} className="px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-850 bg-[#F4F4F5] dark:bg-zinc-900/30 text-[#71717A] dark:text-zinc-300 text-xs hover:border-zinc-350 dark:hover:border-zinc-700 transition-all cursor-default shadow-sm">{skill}</span>
+            <span key={i} className="px-3 py-1.5 rounded-xl border border-[#c8ddf0] dark:border-zinc-850 bg-[#e8f4f8] dark:bg-[#0a1628]/30 text-[#5d7a96] dark:text-[#a0bdd4] text-xs hover:border-zinc-350 dark:hover:border-zinc-700 transition-all cursor-default shadow-sm">{skill}</span>
           ))}
         </div>
       </section>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white dark:bg-[#0a1628]/80 border border-[#c8ddf0] dark:border-[#162340] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
           <ATSBreakdown data={breakdown} />
         </div>
-        <div className="bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white dark:bg-[#0a1628]/80 border border-[#c8ddf0] dark:border-[#162340] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
           <SkillDistribution radarData={sharedData.radar_chart} />
         </div>
       </div>

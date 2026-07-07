@@ -17,7 +17,7 @@ export default function ErrorState({
   const getIcon = () => {
     switch (type) {
       case 'offline':
-        return <WifiOff className="w-8 h-8 text-zinc-500" />;
+        return <WifiOff className="w-8 h-8 text-[#5d7a96]" />;
       case 'upload_fail':
         return <FileX className="w-8 h-8 text-rose-500" />;
       default:
@@ -26,12 +26,12 @@ export default function ErrorState({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center text-center p-8 max-w-sm mx-auto my-12 bg-zinc-950/20 border border-zinc-900 rounded-2xl">
-      <div className="p-3.5 rounded-xl bg-zinc-900 border border-zinc-850 mb-4 shrink-0">
+    <div className="flex flex-col items-center justify-center text-center p-8 max-w-sm mx-auto my-12 bg-[#050a14]/20 border border-[#162340] rounded-2xl">
+      <div className="p-3.5 rounded-xl bg-[#0a1628] border border-zinc-850 mb-4 shrink-0">
         {getIcon()}
       </div>
-      <h3 className="text-sm font-semibold text-zinc-200 mb-1">{title}</h3>
-      <p className="text-[11px] text-zinc-500 font-light leading-relaxed mb-6">
+      <h3 className="text-sm font-semibold text-[#c8ddf0] mb-1">{title}</h3>
+      <p className="text-[11px] text-[#5d7a96] font-light leading-relaxed mb-6">
         {message}
       </p>
       

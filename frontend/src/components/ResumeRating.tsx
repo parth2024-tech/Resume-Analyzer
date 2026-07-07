@@ -12,7 +12,7 @@ const IMPACT_CONFIG = {
   Critical: { color: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-50 dark:bg-rose-950/20', border: 'border-rose-200 dark:border-rose-900/50', dot: 'bg-rose-500' },
   High:     { color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-950/20', border: 'border-amber-200 dark:border-amber-900/50', dot: 'bg-amber-500' },
   Medium:   { color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950/20', border: 'border-blue-200 dark:border-blue-900/50', dot: 'bg-blue-500' },
-  Low:      { color: 'text-zinc-600 dark:text-zinc-400', bg: 'bg-zinc-50 dark:bg-zinc-900/20', border: 'border-zinc-200 dark:border-zinc-800', dot: 'bg-zinc-400' },
+  Low:      { color: 'text-zinc-600 dark:text-[#7a9db8]', bg: 'bg-zinc-50 dark:bg-[#0a1628]/20', border: 'border-[#c8ddf0] dark:border-[#1e3a5f]', dot: 'bg-zinc-400' },
 } as const;
 
 const PILLAR_ICONS: Record<string, React.ReactNode> = {
@@ -51,33 +51,33 @@ function PillarBar({ pillar, index }: { pillar: RatingPillar; index: number }) {
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden"
+      className="rounded-xl border border-[#c8ddf0] dark:border-[#1e3a5f] overflow-hidden"
     >
       {/* Pillar Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center gap-3 p-4 bg-white dark:bg-zinc-900/60 hover:bg-zinc-50 dark:hover:bg-zinc-900/80 transition-colors text-left group"
+        className="w-full flex items-center gap-3 p-4 bg-white dark:bg-[#0a1628]/60 hover:bg-zinc-50 dark:hover:bg-[#0a1628]/80 transition-colors text-left group"
       >
-        <div className="shrink-0 p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+        <div className="shrink-0 p-1.5 rounded-lg bg-zinc-100 dark:bg-[#1e3a5f]/40 text-zinc-600 dark:text-[#7a9db8]">
           {PILLAR_ICONS[pillar.id] || <Star className="w-4 h-4" />}
         </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">{pillar.label}</span>
+            <span className="text-xs font-bold text-zinc-800 dark:text-[#c8ddf0]">{pillar.label}</span>
             <div className="flex items-center gap-2">
               {pillar.suggestions.length > 0 && (
-                <span className="text-[9px] font-semibold text-zinc-500 dark:text-zinc-500">
+                <span className="text-[9px] font-semibold text-[#5d7a96] dark:text-[#5d7a96]">
                   {pillar.suggestions.length} tip{pillar.suggestions.length !== 1 ? 's' : ''}
                 </span>
               )}
               <span className={`text-sm font-bold tabular-nums ${scoreTextColor}`}>{pillar.score}</span>
-              <span className="text-[9px] text-zinc-400">/100</span>
+              <span className="text-[9px] text-[#7a9db8]">/100</span>
             </div>
           </div>
 
           {/* Progress bar */}
-          <div className="h-1.5 w-full rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+          <div className="h-1.5 w-full rounded-full bg-zinc-100 dark:bg-[#1e3a5f]/40 overflow-hidden">
             <motion.div
               className="h-full rounded-full"
               style={{ backgroundColor: scoreColor }}
@@ -88,7 +88,7 @@ function PillarBar({ pillar, index }: { pillar: RatingPillar; index: number }) {
           </div>
         </div>
 
-        <div className="shrink-0 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
+        <div className="shrink-0 text-[#7a9db8] group-hover:text-zinc-600 dark:group-hover:text-[#a0bdd4] transition-colors">
           {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
         </div>
       </button>
@@ -101,9 +101,9 @@ function PillarBar({ pillar, index }: { pillar: RatingPillar; index: number }) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden border-t border-zinc-100 dark:border-zinc-800"
+            className="overflow-hidden border-t border-zinc-100 dark:border-[#1e3a5f]"
           >
-            <div className="p-3 space-y-2 bg-zinc-50/50 dark:bg-zinc-950/30">
+            <div className="p-3 space-y-2 bg-zinc-50/50 dark:bg-[#050a14]/30">
               {pillar.suggestions.map((sug, si) => {
                 const cfg = IMPACT_CONFIG[sug.impact as keyof typeof IMPACT_CONFIG] || IMPACT_CONFIG.Low;
                 return (
@@ -111,12 +111,12 @@ function PillarBar({ pillar, index }: { pillar: RatingPillar; index: number }) {
                     <span className="text-base leading-none shrink-0 mt-0.5">{sug.icon}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-[10px] font-bold text-zinc-700 dark:text-zinc-300 leading-tight">{sug.title}</span>
+                        <span className="text-[10px] font-bold text-zinc-700 dark:text-[#a0bdd4] leading-tight">{sug.title}</span>
                         <span className={`text-[8px] font-bold uppercase px-1.5 py-0.5 rounded ${cfg.bg} ${cfg.color} ${cfg.border} border`}>
                           {sug.impact}
                         </span>
                       </div>
-                      <p className="text-[10px] text-zinc-500 dark:text-zinc-500 leading-relaxed font-light">{sug.detail}</p>
+                      <p className="text-[10px] text-[#5d7a96] dark:text-[#5d7a96] leading-relaxed font-light">{sug.detail}</p>
                     </div>
                   </div>
                 );
@@ -130,7 +130,7 @@ function PillarBar({ pillar, index }: { pillar: RatingPillar; index: number }) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden border-t border-zinc-100 dark:border-zinc-800"
+            className="overflow-hidden border-t border-zinc-100 dark:border-[#1e3a5f]"
           >
             <div className="flex items-center gap-2 p-4 bg-emerald-50/50 dark:bg-emerald-950/10">
               <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
@@ -157,12 +157,12 @@ function SuggestionCard({ sug, index }: { sug: RatingSuggestion; index: number }
       <span className="text-xl leading-none shrink-0 mt-0.5">{sug.icon}</span>
       <div className="flex-1 min-w-0">
         <div className="flex flex-wrap items-center gap-2 mb-1">
-          <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">{sug.title}</span>
+          <span className="text-xs font-semibold text-zinc-800 dark:text-[#c8ddf0]">{sug.title}</span>
           <span className={`text-[8px] font-bold uppercase px-1.5 py-0.5 rounded border ${cfg.bg} ${cfg.color} ${cfg.border}`}>
             {sug.impact}
           </span>
         </div>
-        <p className="text-[11px] text-zinc-500 dark:text-zinc-500 leading-relaxed font-light">{sug.detail}</p>
+        <p className="text-[11px] text-[#5d7a96] dark:text-[#5d7a96] leading-relaxed font-light">{sug.detail}</p>
       </div>
     </motion.div>
   );
@@ -182,22 +182,22 @@ export default function ResumeRating() {
   const strokeColor = gradeStyle.ring;
 
   return (
-    <section className="bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <section className="bg-white dark:bg-[#0a1628]/80 border border-[#c8ddf0] dark:border-[#162340] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-900/60">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-[#c8ddf0] dark:border-[#162340]/60">
         <div className="flex items-center gap-2.5">
           <div className="p-1.5 rounded-lg bg-violet-50 border border-violet-200 text-violet-600 dark:bg-violet-950/20 dark:border-violet-900/50 dark:text-violet-400">
             <BarChart3 className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-xs font-bold text-zinc-900 dark:text-zinc-200 uppercase tracking-widest">Resume Rating</h3>
-            <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-light">5-pillar professional evaluation</p>
+            <h3 className="text-xs font-bold text-zinc-900 dark:text-[#c8ddf0] uppercase tracking-widest">Resume Rating</h3>
+            <p className="text-[10px] text-[#7a9db8] dark:text-[#5d7a96] font-light">5-pillar professional evaluation</p>
           </div>
         </div>
 
         {/* View toggle */}
-        <div className="flex p-0.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-950/60">
+        <div className="flex p-0.5 rounded-xl border border-[#c8ddf0] dark:border-[#1e3a5f] bg-zinc-100 dark:bg-[#050a14]/60">
           {(['pillars', 'suggestions'] as const).map(v => (
             <button
               key={v}
@@ -205,7 +205,7 @@ export default function ResumeRating() {
               className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${
                 activeView === v
                   ? 'bg-white text-zinc-900 dark:bg-zinc-100 dark:text-zinc-950 shadow-sm'
-                  : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white'
+                  : 'text-[#5d7a96] hover:text-zinc-800 dark:text-[#7a9db8] dark:hover:text-white'
               }`}
             >
               {v === 'pillars' ? '📊 Pillars' : '💡 Actions'}
@@ -220,7 +220,7 @@ export default function ResumeRating() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
           {/* Score gauge */}
-          <div className="flex flex-col items-center justify-center gap-3 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-950/30 border border-zinc-100 dark:border-zinc-800">
+          <div className="flex flex-col items-center justify-center gap-3 p-4 rounded-xl bg-zinc-50 dark:bg-[#050a14]/30 border border-zinc-100 dark:border-[#1e3a5f]">
             <div className="relative w-28 h-28 flex items-center justify-center">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
                 <circle cx="60" cy="60" r="52" stroke="#e4e4e7" strokeWidth="8" fill="transparent" className="dark:stroke-zinc-800" />
@@ -236,10 +236,10 @@ export default function ResumeRating() {
               </svg>
               <div className="absolute flex flex-col items-center">
                 <motion.span
-                  className="text-2xl font-bold tabular-nums text-zinc-900 dark:text-zinc-100"
+                  className="text-2xl font-bold tabular-nums text-zinc-900 dark:text-[#e8f4f8]"
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
                 >{overall_score}</motion.span>
-                <span className="text-[8px] text-zinc-400 uppercase tracking-widest font-semibold">/100</span>
+                <span className="text-[8px] text-[#7a9db8] uppercase tracking-widest font-semibold">/100</span>
               </div>
             </div>
             <div className="text-center">
@@ -252,20 +252,20 @@ export default function ResumeRating() {
           {/* Readiness + percentile */}
           <div className="md:col-span-2 flex flex-col gap-3">
             {/* Readiness */}
-            <div className="flex-1 flex flex-col justify-center p-4 rounded-xl bg-zinc-50 dark:bg-zinc-950/30 border border-zinc-100 dark:border-zinc-800">
-              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Hiring Readiness</span>
-              <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100 mb-1">{readiness.level}</p>
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-500 font-light leading-relaxed">{readiness.description}</p>
+            <div className="flex-1 flex flex-col justify-center p-4 rounded-xl bg-zinc-50 dark:bg-[#050a14]/30 border border-zinc-100 dark:border-[#1e3a5f]">
+              <span className="text-[10px] font-bold text-[#7a9db8] uppercase tracking-widest mb-1">Hiring Readiness</span>
+              <p className="text-sm font-bold text-zinc-900 dark:text-[#e8f4f8] mb-1">{readiness.level}</p>
+              <p className="text-[11px] text-[#5d7a96] dark:text-[#5d7a96] font-light leading-relaxed">{readiness.description}</p>
             </div>
 
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-2">
-              <div className="flex flex-col items-center p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/30 border border-zinc-100 dark:border-zinc-800">
-                <span className="text-[10px] text-zinc-400 font-light mb-1 flex items-center gap-1">
+              <div className="flex flex-col items-center p-3 rounded-xl bg-zinc-50 dark:bg-[#050a14]/30 border border-zinc-100 dark:border-[#1e3a5f]">
+                <span className="text-[10px] text-[#7a9db8] font-light mb-1 flex items-center gap-1">
                   <Users className="w-3 h-3" /> Beats
                 </span>
                 <span className="text-xl font-black text-violet-600 dark:text-violet-400">{percentile}%</span>
-                <span className="text-[9px] text-zinc-400">of applicants</span>
+                <span className="text-[9px] text-[#7a9db8]">of applicants</span>
               </div>
               <div className="flex flex-col items-center p-3 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30">
                 <span className="text-[10px] text-rose-500 font-light mb-1 flex items-center gap-1">
@@ -295,9 +295,9 @@ export default function ResumeRating() {
               className="space-y-2"
             >
               <div className="flex items-center gap-1.5 mb-3">
-                <Target className="w-3.5 h-3.5 text-zinc-400" />
-                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">5 Evaluation Pillars</span>
-                <span className="text-[9px] text-zinc-400 ml-auto">Click a pillar to see tips</span>
+                <Target className="w-3.5 h-3.5 text-[#7a9db8]" />
+                <span className="text-[10px] font-bold text-[#7a9db8] uppercase tracking-widest">5 Evaluation Pillars</span>
+                <span className="text-[9px] text-[#7a9db8] ml-auto">Click a pillar to see tips</span>
               </div>
               {pillars.map((pillar, i) => (
                 <PillarBar key={pillar.id} pillar={pillar} index={i} />
@@ -311,9 +311,9 @@ export default function ResumeRating() {
               className="space-y-2"
             >
               <div className="flex items-center gap-1.5 mb-3">
-                <Award className="w-3.5 h-3.5 text-zinc-400" />
-                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Top Prioritised Actions</span>
-                <span className="text-[9px] text-zinc-400 ml-auto">Sorted by impact</span>
+                <Award className="w-3.5 h-3.5 text-[#7a9db8]" />
+                <span className="text-[10px] font-bold text-[#7a9db8] uppercase tracking-widest">Top Prioritised Actions</span>
+                <span className="text-[9px] text-[#7a9db8] ml-auto">Sorted by impact</span>
               </div>
               {top_suggestions.length > 0 ? (
                 top_suggestions.map((sug, i) => (
@@ -322,8 +322,8 @@ export default function ResumeRating() {
               ) : (
                 <div className="flex flex-col items-center gap-3 py-10 text-center">
                   <CheckCircle className="w-8 h-8 text-emerald-500" />
-                  <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">No major issues found!</p>
-                  <p className="text-xs text-zinc-400 font-light">Your resume scores well across all evaluated pillars.</p>
+                  <p className="text-sm font-medium text-zinc-600 dark:text-[#7a9db8]">No major issues found!</p>
+                  <p className="text-xs text-[#7a9db8] font-light">Your resume scores well across all evaluated pillars.</p>
                 </div>
               )}
             </motion.div>
@@ -331,15 +331,15 @@ export default function ResumeRating() {
         </AnimatePresence>
 
         {/* Bottom progress overview */}
-        <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800">
+        <div className="pt-4 border-t border-zinc-100 dark:border-[#1e3a5f]">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] text-zinc-400 font-light uppercase tracking-widest">Overall progress</span>
-            <span className="text-[10px] font-bold text-zinc-500">{overall_score}/100 pts</span>
+            <span className="text-[10px] text-[#7a9db8] font-light uppercase tracking-widest">Overall progress</span>
+            <span className="text-[10px] font-bold text-[#5d7a96]">{overall_score}/100 pts</span>
           </div>
           <div className="grid grid-cols-5 gap-1">
             {pillars.map((p) => (
               <div key={p.id} className="flex flex-col items-center gap-1">
-                <div className="w-full h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                <div className="w-full h-1.5 rounded-full bg-zinc-100 dark:bg-[#1e3a5f]/40 overflow-hidden">
                   <motion.div
                     className="h-full rounded-full"
                     style={{
@@ -350,7 +350,7 @@ export default function ResumeRating() {
                     transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
                   />
                 </div>
-                <span className="text-[8px] text-zinc-400 text-center leading-tight font-light">{p.label.split(' ')[0]}</span>
+                <span className="text-[8px] text-[#7a9db8] text-center leading-tight font-light">{p.label.split(' ')[0]}</span>
               </div>
             ))}
           </div>

@@ -15,31 +15,31 @@ export default function ResumeHeatmap() {
   };
 
   return (
-    <div className="bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-900 rounded-2xl p-6 text-left space-y-6 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white dark:bg-[#0a1628]/80 border border-[#c8ddf0] dark:border-[#162340] rounded-2xl p-6 text-left space-y-6 shadow-sm hover:shadow-md transition-shadow">
       <div>
-        <span className="text-[10px] font-bold text-[#71717A] dark:text-zinc-500 uppercase tracking-widest block">Quality heat-map</span>
-        <span className="text-xs text-[#71717A] dark:text-zinc-300 font-light mt-0.5 block">Automated confidence weights per resume component</span>
+        <span className="text-[10px] font-bold text-[#5d7a96] dark:text-[#5d7a96] uppercase tracking-widest block">Quality heat-map</span>
+        <span className="text-xs text-[#5d7a96] dark:text-[#a0bdd4] font-light mt-0.5 block">Automated confidence weights per resume component</span>
       </div>
 
       <div className="space-y-4">
         {sections.map((sec, i) => {
           const status = getStatusColor(sec.score);
           return (
-            <div key={i} className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-900 bg-[#F4F4F5]/30 dark:bg-zinc-950/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div key={i} className="p-4 rounded-xl border border-[#c8ddf0] dark:border-[#162340] bg-[#e8f4f8]/30 dark:bg-[#050a14]/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1 max-w-xl">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-[#09090B] dark:text-zinc-200">{sec.section}</span>
+                  <span className="text-xs font-semibold text-[#050a14] dark:text-[#c8ddf0]">{sec.section}</span>
                   <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full border ${status.bg}`}>
                     <span className={`h-1 w-1 rounded-full ${status.dot}`} />
                     {sec.status}
                   </span>
                 </div>
-                <p className="text-[11px] text-[#71717A] dark:text-zinc-500 font-light leading-relaxed">Automated parsing and analysis criteria</p>
-                <div className="text-[10px] text-[#71717A] dark:text-zinc-350 font-normal flex items-start gap-1.5 pt-1.5 border-t border-zinc-200 dark:border-zinc-900/50 mt-1.5">
+                <p className="text-[11px] text-[#5d7a96] dark:text-[#5d7a96] font-light leading-relaxed">Automated parsing and analysis criteria</p>
+                <div className="text-[10px] text-[#5d7a96] dark:text-zinc-350 font-normal flex items-start gap-1.5 pt-1.5 border-t border-[#c8ddf0] dark:border-[#162340]/50 mt-1.5">
                   {sec.score >= 80 ? (
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
                   ) : (
-                    <AlertCircle className="w-3.5 h-3.5 text-zinc-500 shrink-0 mt-0.5" />
+                    <AlertCircle className="w-3.5 h-3.5 text-[#5d7a96] shrink-0 mt-0.5" />
                   )}
                   <span>{sec.description}</span>
                 </div>
@@ -48,7 +48,7 @@ export default function ResumeHeatmap() {
               {/* Confidence metric indicator */}
               <div className="flex items-baseline gap-1 self-end md:self-center">
                 <span className={`text-2xl font-bold tracking-tight ${status.text}`}>{sec.score}</span>
-                <span className="text-[10px] text-[#71717A] dark:text-zinc-400 font-light">/100</span>
+                <span className="text-[10px] text-[#5d7a96] dark:text-[#7a9db8] font-light">/100</span>
               </div>
             </div>
           );

@@ -128,17 +128,17 @@ export default function AIChatPanel({ onClose }: { onClose?: () => void }) {
 
   return (
     <div className={`flex flex-col h-full w-full relative ${
-      theme === 'dark' ? 'text-zinc-200 bg-[#0d0d0d]' : 'text-[#09090B] bg-[#FAFAFA]'
+      theme === 'dark' ? 'text-[#c8ddf0] bg-[#0d0d0d]' : 'text-[#050a14] bg-[#f0f6ff]'
     }`}>
       {/* Header */}
       <div className={`h-14 flex items-center justify-between px-4 border-b shrink-0 ${
-        theme === 'dark' ? 'border-zinc-900 bg-zinc-950/40' : 'border-zinc-200 bg-white/60 backdrop-blur-md'
+        theme === 'dark' ? 'border-[#162340] bg-[#050a14]/40' : 'border-[#c8ddf0] bg-white/60 backdrop-blur-md'
       }`}>
         <div className="flex items-center gap-2">
-          <div className="p-1 rounded-lg bg-purple-500/10 text-purple-400">
+          <div className="p-1 rounded-lg bg-cyan-500/10 text-[#0ef6cc]">
             <Sparkles className="w-3.5 h-3.5" />
           </div>
-          <span className={`text-xs font-semibold uppercase tracking-wider ${theme === 'dark' ? 'text-zinc-200' : 'text-[#09090B]'}`}>
+          <span className={`text-xs font-semibold uppercase tracking-wider ${theme === 'dark' ? 'text-[#c8ddf0]' : 'text-[#050a14]'}`}>
             AI Assistant
           </span>
         </div>
@@ -146,10 +146,10 @@ export default function AIChatPanel({ onClose }: { onClose?: () => void }) {
         {onClose && (
           <button
             onClick={onClose}
-            className={`p-1.5 rounded-lg border border-transparent transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-purple-500 ${
+            className={`p-1.5 rounded-lg border border-transparent transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#0ef6cc] ${
               theme === 'dark' 
-                ? 'hover:border-zinc-800 hover:bg-zinc-900/40 text-zinc-400 hover:text-zinc-200' 
-                : 'hover:border-zinc-300 hover:bg-[#F4F4F5] text-[#71717A] hover:text-[#09090B]'
+                ? 'hover:border-[#1e3a5f] hover:bg-[#0a1628]/40 text-[#7a9db8] hover:text-[#c8ddf0]' 
+                : 'hover:border-zinc-300 hover:bg-[#e8f4f8] text-[#5d7a96] hover:text-[#050a14]'
             }`}
             aria-label="Close AI Assistant"
             title="Close Assistant"
@@ -189,18 +189,18 @@ export default function AIChatPanel({ onClose }: { onClose?: () => void }) {
                   <div className={`p-3.5 rounded-2xl text-[12px] leading-relaxed max-w-[95%] ${
                     msg.role === 'user'
                       ? theme === 'dark'
-                        ? 'bg-zinc-900 text-zinc-100 border border-zinc-800 rounded-br-none shadow-sm'
-                        : 'bg-[#09090B] text-white border border-[#09090B] rounded-br-none shadow-sm'
+                        ? 'bg-[#0a1628] text-[#e8f4f8] border border-[#1e3a5f] rounded-br-none shadow-sm'
+                        : 'bg-[#050a14] text-white border border-[#050a14] rounded-br-none shadow-sm'
                       : theme === 'dark'
-                        ? 'bg-zinc-900/80 text-zinc-100 rounded-bl-none border border-zinc-900/60'
-                        : 'bg-white text-[#09090B] rounded-bl-none border border-zinc-200 shadow-sm'
+                        ? 'bg-[#0a1628]/80 text-[#e8f4f8] rounded-bl-none border border-[#162340]/60'
+                        : 'bg-white text-[#050a14] rounded-bl-none border border-[#c8ddf0] shadow-sm'
                   }`}>
                     {/* Process bold lines and code blocks */}
                     <div className="whitespace-pre-wrap">
                       {msg.content.split('\n').map((line, i) => {
                         if (line.startsWith('>')) {
                           return (
-                            <blockquote key={i} className="border-l-2 border-zinc-550 dark:border-zinc-500 pl-3 italic text-zinc-400 my-1.5">
+                            <blockquote key={i} className="border-l-2 border-zinc-550 dark:border-zinc-500 pl-3 italic text-[#7a9db8] my-1.5">
                               {line.substring(1).trim()}
                             </blockquote>
                           );
@@ -217,8 +217,8 @@ export default function AIChatPanel({ onClose }: { onClose?: () => void }) {
               <div className="flex w-full justify-start">
                 <div className={`p-3 rounded-2xl text-xs rounded-bl-none flex items-center gap-1.5 ${
                   theme === 'dark' 
-                    ? 'bg-zinc-900/80 border border-zinc-900/60 text-zinc-400' 
-                    : 'bg-white border border-zinc-200 text-[#71717A] shadow-sm'
+                    ? 'bg-[#0a1628]/80 border border-[#162340]/60 text-[#7a9db8]' 
+                    : 'bg-white border border-[#c8ddf0] text-[#5d7a96] shadow-sm'
                 }`}>
                   <span className="h-1.5 w-1.5 rounded-full bg-current animate-bounce" />
                   <span className="h-1.5 w-1.5 rounded-full bg-current animate-bounce [animation-delay:0.2s]" />
@@ -238,8 +238,8 @@ export default function AIChatPanel({ onClose }: { onClose?: () => void }) {
               onClick={() => handleSend(p)}
               className={`text-[10px] p-2 rounded-xl border transition-all text-left font-medium leading-tight active:scale-[0.98] ${
                 theme === 'dark'
-                  ? 'text-zinc-300 border-zinc-900 bg-zinc-900/60 hover:border-zinc-800 hover:text-white hover:bg-zinc-900/80'
-                  : 'text-[#71717A] border-zinc-200 bg-white hover:border-zinc-350 hover:text-[#09090B] hover:bg-[#F4F4F5] shadow-sm'
+                  ? 'text-[#a0bdd4] border-[#162340] bg-[#0a1628]/60 hover:border-[#1e3a5f] hover:text-white hover:bg-[#0a1628]/80'
+                  : 'text-[#5d7a96] border-[#c8ddf0] bg-white hover:border-zinc-350 hover:text-[#050a14] hover:bg-[#e8f4f8] shadow-sm'
               }`}
             >
               {p}
@@ -250,7 +250,7 @@ export default function AIChatPanel({ onClose }: { onClose?: () => void }) {
 
       {/* Input bar */}
       <div className={`p-4 border-t shrink-0 ${
-        theme === 'dark' ? 'border-zinc-900 bg-[#0d0d0d]' : 'border-zinc-200 bg-[#FAFAFA]'
+        theme === 'dark' ? 'border-[#162340] bg-[#0d0d0d]' : 'border-[#c8ddf0] bg-[#f0f6ff]'
       }`}>
         <form
           onSubmit={(e) => {
@@ -266,18 +266,18 @@ export default function AIChatPanel({ onClose }: { onClose?: () => void }) {
             placeholder={isTyping ? "Thinking..." : "Ask assistant..."}
             className={`w-full rounded-2xl pl-4 pr-11 py-3 text-xs transition-all border disabled:opacity-50 ${
               theme === 'dark'
-                ? 'bg-zinc-900/40 border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-700 focus:bg-zinc-900/60'
-                : 'bg-white border-zinc-200 text-[#09090B] placeholder-[#A1A1AA] focus:outline-none focus:border-zinc-400 focus:bg-white shadow-sm focus:ring-1 focus:ring-zinc-400/50'
+                ? 'bg-[#0a1628]/40 border-[#1e3a5f] text-[#e8f4f8] placeholder-zinc-500 focus:outline-none focus:border-zinc-700 focus:bg-[#0a1628]/60'
+                : 'bg-white border-[#c8ddf0] text-[#050a14] placeholder-[#A1A1AA] focus:outline-none focus:border-zinc-400 focus:bg-white shadow-sm focus:ring-1 focus:ring-zinc-400/50'
             }`}
             disabled={isTyping}
           />
           <button
             type="submit"
             disabled={isTyping || !input.trim()}
-            className={`absolute right-1.5 p-2 rounded-xl transition-all disabled:opacity-30 active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-purple-500 ${
+            className={`absolute right-1.5 p-2 rounded-xl transition-all disabled:opacity-30 active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#0ef6cc] ${
               theme === 'dark'
-                ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200'
-                : 'bg-white border border-zinc-200 text-[#71717A] hover:bg-[#F4F4F5] hover:text-[#09090B] shadow-sm'
+                ? 'bg-[#1e3a5f]/40 hover:bg-zinc-700 text-[#c8ddf0]'
+                : 'bg-white border border-[#c8ddf0] text-[#5d7a96] hover:bg-[#e8f4f8] hover:text-[#050a14] shadow-sm'
             }`}
             aria-label="Send message"
           >

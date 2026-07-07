@@ -94,7 +94,7 @@ function getRankBadge(rank: number, theme: string) {
     );
   if (rank === 2)
     return (
-      <div className={`${base} bg-zinc-400/15 border border-zinc-400/40 text-zinc-400`}>
+      <div className={`${base} bg-zinc-400/15 border border-zinc-400/40 text-[#7a9db8]`}>
         <Medal className="w-4 h-4" />
       </div>
     );
@@ -108,8 +108,8 @@ function getRankBadge(rank: number, theme: string) {
     <div
       className={`${base} ${
         theme === 'dark'
-          ? 'bg-zinc-800 border border-zinc-700 text-zinc-400'
-          : 'bg-zinc-100 border border-zinc-200 text-zinc-500'
+          ? 'bg-[#1e3a5f]/40 border border-zinc-700 text-[#7a9db8]'
+          : 'bg-zinc-100 border border-[#c8ddf0] text-[#5d7a96]'
       }`}
     >
       #{rank}
@@ -138,7 +138,7 @@ function ScoreRing({ score, size = 72 }: { score: number; size?: number }) {
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="currentColor"
-        strokeWidth="5" className="text-zinc-200 dark:text-zinc-800" />
+        strokeWidth="5" className="text-[#c8ddf0] dark:text-zinc-800" />
       <motion.circle
         cx={size / 2} cy={size / 2} r={r} fill="none" stroke={stroke}
         strokeWidth="5" strokeDasharray={circ}
@@ -160,10 +160,10 @@ function ScoreTooltip({ label, value, color, theme }: { label: string; value: nu
     <div className="space-y-1 relative">
       <div className="flex justify-between items-center gap-1">
         <div className="flex items-center gap-1">
-          <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-500">{label}</span>
+          <span className="text-[10px] font-medium text-[#5d7a96] dark:text-[#5d7a96]">{label}</span>
           {explanation && (
             <div className="relative" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
-              <Info className="w-2.5 h-2.5 text-zinc-400 cursor-help" />
+              <Info className="w-2.5 h-2.5 text-[#7a9db8] cursor-help" />
               <AnimatePresence>
                 {show && (
                   <motion.div
@@ -173,8 +173,8 @@ function ScoreTooltip({ label, value, color, theme }: { label: string; value: nu
                     transition={{ duration: 0.15 }}
                     className={`absolute z-50 bottom-full left-0 mb-1.5 w-52 p-2.5 rounded-xl border text-[10px] leading-relaxed shadow-xl ${
                       theme === 'dark'
-                        ? 'bg-zinc-900 border-zinc-700 text-zinc-300'
-                        : 'bg-white border-zinc-200 text-zinc-600'
+                        ? 'bg-[#0a1628] border-zinc-700 text-[#a0bdd4]'
+                        : 'bg-white border-[#c8ddf0] text-zinc-600'
                     }`}
                   >
                     {explanation}
@@ -186,7 +186,7 @@ function ScoreTooltip({ label, value, color, theme }: { label: string; value: nu
         </div>
         <span className={`text-[10px] font-bold ${scoreColor(value)}`}>{value}%</span>
       </div>
-      <div className="h-1 w-full rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+      <div className="h-1 w-full rounded-full bg-zinc-100 dark:bg-[#1e3a5f]/40 overflow-hidden">
         <motion.div
           className={`h-full rounded-full bg-gradient-to-r ${color}`}
           initial={{ width: 0 }}
@@ -202,10 +202,10 @@ function MiniBar({ label, value, color }: { label: string; value: number; color:
   return (
     <div className="space-y-1">
       <div className="flex justify-between items-center">
-        <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-500">{label}</span>
+        <span className="text-[10px] font-medium text-[#5d7a96] dark:text-[#5d7a96]">{label}</span>
         <span className={`text-[10px] font-bold ${scoreColor(value)}`}>{value}%</span>
       </div>
-      <div className="h-1 w-full rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+      <div className="h-1 w-full rounded-full bg-zinc-100 dark:bg-[#1e3a5f]/40 overflow-hidden">
         <motion.div
           className={`h-full rounded-full bg-gradient-to-r ${color}`}
           initial={{ width: 0 }}
@@ -261,21 +261,21 @@ function CompareModal({ a, b, onClose, theme }: { a: ScreeningResult; b: Screeni
         transition={{ duration: 0.25, ease: 'easeOut' }}
         onClick={(e) => e.stopPropagation()}
         className={`relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl border shadow-2xl ${
-          theme === 'dark' ? 'bg-zinc-950 border-zinc-800' : 'bg-white border-zinc-200'
+          theme === 'dark' ? 'bg-[#050a14] border-[#1e3a5f]' : 'bg-white border-[#c8ddf0]'
         }`}
       >
         {/* Header */}
         <div className={`sticky top-0 z-10 flex items-center justify-between p-5 border-b ${
-          theme === 'dark' ? 'bg-zinc-950 border-zinc-800' : 'bg-white border-zinc-100'
+          theme === 'dark' ? 'bg-[#050a14] border-[#1e3a5f]' : 'bg-white border-zinc-100'
         }`}>
           <div className="flex items-center gap-2">
-            <GitCompare className="w-4 h-4 text-purple-500" />
-            <span className={`text-sm font-semibold ${theme === 'dark' ? 'text-zinc-100' : 'text-zinc-900'}`}>
+            <GitCompare className="w-4 h-4 text-[#0ef6cc]" />
+            <span className={`text-sm font-semibold ${theme === 'dark' ? 'text-[#e8f4f8]' : 'text-zinc-900'}`}>
               Candidate Comparison
             </span>
           </div>
           <button onClick={onClose} className={`p-1.5 rounded-lg transition-colors ${
-            theme === 'dark' ? 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800' : 'text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100'
+            theme === 'dark' ? 'text-[#5d7a96] hover:text-[#c8ddf0] hover:bg-[#1e3a5f]/40' : 'text-[#7a9db8] hover:text-zinc-700 hover:bg-zinc-100'
           }`}>
             <X className="w-4 h-4" />
           </button>
@@ -286,15 +286,15 @@ function CompareModal({ a, b, onClose, theme }: { a: ScreeningResult; b: Screeni
           <div className="grid grid-cols-2 gap-4 mb-6">
             {[a, b].map((r, i) => (
               <div key={i} className={`rounded-xl p-4 border ${
-                theme === 'dark' ? 'bg-zinc-900 border-zinc-800' : 'bg-zinc-50 border-zinc-200'
+                theme === 'dark' ? 'bg-[#0a1628] border-[#1e3a5f]' : 'bg-zinc-50 border-[#c8ddf0]'
               }`}>
                 <div className="flex items-center gap-2 mb-1">
                   {getRankBadge(r.rank, theme)}
                   <div>
-                    <p className={`text-sm font-semibold ${theme === 'dark' ? 'text-zinc-100' : 'text-zinc-900'}`}>
+                    <p className={`text-sm font-semibold ${theme === 'dark' ? 'text-[#e8f4f8]' : 'text-zinc-900'}`}>
                       {r.candidate_name !== 'Unknown' ? r.candidate_name : r.filename}
                     </p>
-                    {r.email && <p className="text-[10px] text-zinc-500">{r.email}</p>}
+                    {r.email && <p className="text-[10px] text-[#5d7a96]">{r.email}</p>}
                   </div>
                 </div>
                 <div className="flex items-center gap-2 mt-2">
@@ -309,10 +309,10 @@ function CompareModal({ a, b, onClose, theme }: { a: ScreeningResult; b: Screeni
 
           {/* Score Comparison Rows */}
           <div className={`rounded-xl border overflow-hidden mb-6 ${
-            theme === 'dark' ? 'border-zinc-800' : 'border-zinc-200'
+            theme === 'dark' ? 'border-[#1e3a5f]' : 'border-[#c8ddf0]'
           }`}>
             <div className={`grid grid-cols-3 px-4 py-2 text-[10px] font-bold uppercase tracking-widest border-b ${
-              theme === 'dark' ? 'bg-zinc-900 border-zinc-800 text-zinc-500' : 'bg-zinc-50 border-zinc-200 text-zinc-400'
+              theme === 'dark' ? 'bg-[#0a1628] border-[#1e3a5f] text-[#5d7a96]' : 'bg-zinc-50 border-[#c8ddf0] text-[#7a9db8]'
             }`}>
               <span>{a.candidate_name !== 'Unknown' ? a.candidate_name : a.filename}</span>
               <span className="text-center">Metric</span>
@@ -320,10 +320,10 @@ function CompareModal({ a, b, onClose, theme }: { a: ScreeningResult; b: Screeni
             </div>
             {scoreRows.map(({ label, ka, kb }) => (
               <div key={label} className={`grid grid-cols-3 items-center px-4 py-2.5 border-b last:border-0 ${
-                theme === 'dark' ? 'border-zinc-800' : 'border-zinc-100'
+                theme === 'dark' ? 'border-[#1e3a5f]' : 'border-zinc-100'
               }`}>
                 <span className={`text-sm font-bold ${scoreColor(ka)} ${ka >= kb ? 'opacity-100' : 'opacity-50'}`}>{ka}%</span>
-                <span className={`text-center text-[10px] font-medium ${theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'}`}>{label}</span>
+                <span className={`text-center text-[10px] font-medium ${theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'}`}>{label}</span>
                 <span className={`text-right text-sm font-bold ${scoreColor(kb)} ${kb >= ka ? 'opacity-100' : 'opacity-50'}`}>{kb}%</span>
               </div>
             ))}
@@ -339,12 +339,12 @@ function CompareModal({ a, b, onClose, theme }: { a: ScreeningResult; b: Screeni
               const unique = r.matched_keywords.filter(k => !other.matched_keywords.includes(k));
               return (
                 <div key={label}>
-                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'}`}>{label}</p>
+                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'}`}>{label}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {unique.length === 0
-                      ? <span className="text-[10px] text-zinc-500">No unique matches</span>
+                      ? <span className="text-[10px] text-[#5d7a96]">No unique matches</span>
                       : unique.map(k => (
-                        <span key={k} className="text-[10px] px-2 py-0.5 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-500 font-medium">{k}</span>
+                        <span key={k} className="text-[10px] px-2 py-0.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-[#0ef6cc] font-medium">{k}</span>
                       ))
                     }
                   </div>
@@ -399,28 +399,28 @@ function BatchAnalytics({ results, theme }: { results: ScreeningResult[]; theme:
     })).sort((a, b) => b.avg - a.avg);
   }, [results]);
 
-  const cardCls = `rounded-2xl border p-5 ${theme === 'dark' ? 'bg-zinc-900/80 border-zinc-800' : 'bg-white border-zinc-200'}`;
+  const cardCls = `rounded-2xl border p-5 ${theme === 'dark' ? 'bg-[#0a1628]/80 border-[#1e3a5f]' : 'bg-white border-[#c8ddf0]'}`;
 
   return (
-    <div className={`rounded-2xl border overflow-hidden ${theme === 'dark' ? 'border-zinc-800' : 'border-zinc-200'}`}>
+    <div className={`rounded-2xl border overflow-hidden ${theme === 'dark' ? 'border-[#1e3a5f]' : 'border-[#c8ddf0]'}`}>
       <button
         onClick={() => setOpen(o => !o)}
         className={`w-full flex items-center justify-between px-5 py-3.5 text-left transition-colors ${
-          theme === 'dark' ? 'bg-zinc-900/80 hover:bg-zinc-800/60' : 'bg-zinc-50 hover:bg-zinc-100'
+          theme === 'dark' ? 'bg-[#0a1628]/80 hover:bg-[#1e3a5f]/40/60' : 'bg-zinc-50 hover:bg-zinc-100'
         }`}
       >
         <div className="flex items-center gap-2">
-          <BarChart3 className="w-4 h-4 text-purple-500" />
-          <span className={`text-xs font-semibold ${theme === 'dark' ? 'text-zinc-200' : 'text-zinc-800'}`}>
+          <BarChart3 className="w-4 h-4 text-[#0ef6cc]" />
+          <span className={`text-xs font-semibold ${theme === 'dark' ? 'text-[#c8ddf0]' : 'text-zinc-800'}`}>
             Batch Analytics
           </span>
           <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-md border ${
-            theme === 'dark' ? 'bg-purple-500/10 border-purple-500/20 text-purple-400' : 'bg-purple-50 border-purple-200 text-purple-600'
+            theme === 'dark' ? 'bg-cyan-500/10 border-cyan-500/20 text-[#0ef6cc]' : 'bg-cyan-50 border-cyan-200 text-purple-600'
           }`}>
             {results.length} candidates
           </span>
         </div>
-        {open ? <ChevronUp className="w-3.5 h-3.5 text-zinc-500" /> : <ChevronDown className="w-3.5 h-3.5 text-zinc-500" />}
+        {open ? <ChevronUp className="w-3.5 h-3.5 text-[#5d7a96]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#5d7a96]" />}
       </button>
 
       <AnimatePresence>
@@ -432,24 +432,24 @@ function BatchAnalytics({ results, theme }: { results: ScreeningResult[]; theme:
             transition={{ duration: 0.25 }}
             className="overflow-hidden"
           >
-            <div className={`p-5 border-t ${theme === 'dark' ? 'border-zinc-800' : 'border-zinc-100'}`}>
+            <div className={`p-5 border-t ${theme === 'dark' ? 'border-[#1e3a5f]' : 'border-zinc-100'}`}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {/* Score Distribution Histogram */}
                 <div>
-                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'}`}>
+                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'}`}>
                     Score Distribution
                   </p>
                   <div className="h-32">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={histogram} barSize={20}>
-                        <XAxis dataKey="range" tick={{ fontSize: 8, fill: theme === 'dark' ? '#71717a' : '#a1a1aa' }} />
-                        <YAxis allowDecimals={false} tick={{ fontSize: 8, fill: theme === 'dark' ? '#71717a' : '#a1a1aa' }} />
+                        <XAxis dataKey="range" tick={{ fontSize: 8, fill: theme === 'dark' ? '#5d7a96' : '#a1a1aa' }} />
+                        <YAxis allowDecimals={false} tick={{ fontSize: 8, fill: theme === 'dark' ? '#5d7a96' : '#a1a1aa' }} />
                         <Tooltip
                           contentStyle={{
                             fontSize: '10px',
-                            background: theme === 'dark' ? '#18181b' : '#ffffff',
+                            background: theme === 'dark' ? '#0a1628' : '#ffffff',
                             border: `1px solid ${theme === 'dark' ? '#27272a' : '#e4e4e7'}`,
-                            color: theme === 'dark' ? '#f4f4f5' : '#18181b',
+                            color: theme === 'dark' ? '#e8f4f8' : '#0a1628',
                             borderRadius: '8px',
                           }}
                           formatter={(v: number) => [`${v} candidates`, 'Count']}
@@ -470,15 +470,15 @@ function BatchAnalytics({ results, theme }: { results: ScreeningResult[]; theme:
 
                 {/* Top Missing Keywords */}
                 <div>
-                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'}`}>
+                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'}`}>
                     Most Missing Keywords
                   </p>
                   <div className="space-y-2">
                     {topMissingKeywords.length === 0
-                      ? <p className="text-[10px] text-zinc-500">No data</p>
+                      ? <p className="text-[10px] text-[#5d7a96]">No data</p>
                       : topMissingKeywords.map(([kw, count]) => (
                         <div key={kw} className="flex items-center gap-2">
-                          <span className={`text-[10px] flex-1 truncate font-medium ${theme === 'dark' ? 'text-zinc-300' : 'text-zinc-700'}`}>{kw}</span>
+                          <span className={`text-[10px] flex-1 truncate font-medium ${theme === 'dark' ? 'text-[#a0bdd4]' : 'text-zinc-700'}`}>{kw}</span>
                           <div className="flex items-center gap-1">
                             <div className="h-1 rounded-full bg-rose-500/30 overflow-hidden" style={{ width: '40px' }}>
                               <div
@@ -496,12 +496,12 @@ function BatchAnalytics({ results, theme }: { results: ScreeningResult[]; theme:
 
                 {/* Avg Category Scores */}
                 <div>
-                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'}`}>
+                  <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'}`}>
                     Avg Skill Category Coverage
                   </p>
                   <div className="space-y-2">
                     {avgCategoryScores.length === 0
-                      ? <p className="text-[10px] text-zinc-500">No category data</p>
+                      ? <p className="text-[10px] text-[#5d7a96]">No category data</p>
                       : avgCategoryScores.map(({ cat, avg }) => (
                         <MiniBar
                           key={cat}
@@ -578,15 +578,15 @@ function ResultCard({
       className={`rounded-2xl border overflow-hidden transition-all ${
         isSelected
           ? theme === 'dark'
-            ? 'border-purple-500/50 shadow-lg shadow-purple-500/5 bg-zinc-900/80'
-            : 'border-purple-300 shadow-lg shadow-purple-100 bg-white'
+            ? 'border-cyan-500/50 shadow-lg shadow-purple-500/5 bg-[#0a1628]/80'
+            : 'border-cyan-300 shadow-lg shadow-purple-100 bg-white'
           : isTop
           ? theme === 'dark'
-            ? 'border-yellow-500/30 shadow-lg shadow-yellow-500/5 bg-zinc-900/80'
+            ? 'border-yellow-500/30 shadow-lg shadow-yellow-500/5 bg-[#0a1628]/80'
             : 'border-yellow-300 shadow-lg shadow-yellow-100 bg-white'
           : theme === 'dark'
-          ? 'border-zinc-800 bg-zinc-900/70 hover:border-zinc-700'
-          : 'border-zinc-200 bg-white hover:border-zinc-300 hover:shadow-sm'
+          ? 'border-[#1e3a5f] bg-[#0a1628]/70 hover:border-zinc-700'
+          : 'border-[#c8ddf0] bg-white hover:border-zinc-300 hover:shadow-sm'
       }`}
     >
       {/* Top bar for #1 */}
@@ -603,7 +603,7 @@ function ResultCard({
         <button
           onClick={onToggleSelect}
           className={`shrink-0 mt-0.5 transition-colors ${
-            isSelected ? 'text-purple-500' : theme === 'dark' ? 'text-zinc-600 hover:text-zinc-400' : 'text-zinc-300 hover:text-zinc-500'
+            isSelected ? 'text-[#0ef6cc]' : theme === 'dark' ? 'text-zinc-600 hover:text-[#7a9db8]' : 'text-[#a0bdd4] hover:text-[#5d7a96]'
           }`}
         >
           {isSelected ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
@@ -619,7 +619,7 @@ function ResultCard({
             <span className={`text-sm font-bold leading-none ${scoreColor(result.composite_score)}`}>
               {result.composite_score}
             </span>
-            <span className="text-[8px] text-zinc-500 dark:text-zinc-500 font-bold uppercase leading-none mt-0.5">
+            <span className="text-[8px] text-[#5d7a96] dark:text-[#5d7a96] font-bold uppercase leading-none mt-0.5">
               Score
             </span>
           </div>
@@ -630,7 +630,7 @@ function ResultCard({
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className={`text-sm font-semibold ${
-                theme === 'dark' ? 'text-zinc-100' : 'text-zinc-900'
+                theme === 'dark' ? 'text-[#e8f4f8]' : 'text-zinc-900'
               }`}>
                 {result.candidate_name !== 'Unknown' ? result.candidate_name : result.filename}
               </h3>
@@ -642,16 +642,16 @@ function ResultCard({
                 className="flex items-center gap-1 mt-0.5 group"
                 title="Copy email"
               >
-                <span className="text-[10px] text-zinc-500 group-hover:text-purple-400 transition-colors truncate max-w-[180px]">
+                <span className="text-[10px] text-[#5d7a96] group-hover:text-[#0ef6cc] transition-colors truncate max-w-[180px]">
                   {result.email}
                 </span>
                 {copied
                   ? <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
-                  : <Copy className="w-2.5 h-2.5 text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  : <Copy className="w-2.5 h-2.5 text-[#7a9db8] opacity-0 group-hover:opacity-100 transition-opacity" />
                 }
               </button>
             )}
-            <p className="text-[10px] text-zinc-500 truncate mt-0.5">{result.filename}</p>
+            <p className="text-[10px] text-[#5d7a96] truncate mt-0.5">{result.filename}</p>
           </div>
 
           {/* Skill chips */}
@@ -659,20 +659,20 @@ function ResultCard({
             {result.skills.slice(0, 7).map((s) => (
               <span key={s} className={`text-[9px] font-medium px-1.5 py-0.5 rounded-md border ${
                 theme === 'dark'
-                  ? 'bg-zinc-800 border-zinc-700 text-zinc-400'
-                  : 'bg-zinc-100 border-zinc-200 text-zinc-500'
+                  ? 'bg-[#1e3a5f]/40 border-zinc-700 text-[#7a9db8]'
+                  : 'bg-zinc-100 border-[#c8ddf0] text-[#5d7a96]'
               }`}>
                 {s}
               </span>
             ))}
             {result.skills.length > 7 && (
-              <span className="text-[9px] text-zinc-500">+{result.skills.length - 7}</span>
+              <span className="text-[9px] text-[#5d7a96]">+{result.skills.length - 7}</span>
             )}
           </div>
 
           {/* Mini sub-scores */}
           <div className="grid grid-cols-3 gap-2 pt-1">
-            <MiniBar label="Keyword" value={result.keyword_score} color="from-purple-500 to-purple-400" />
+            <MiniBar label="Keyword" value={result.keyword_score} color="from-purple-500 to-[#0ef6cc]" />
             <MiniBar label="Semantic" value={result.cosine_score} color="from-blue-500 to-blue-400" />
             <MiniBar label="ATS" value={result.ats_score} color={
               result.ats_score >= 70 ? 'from-emerald-500 to-emerald-400' :
@@ -696,7 +696,7 @@ function ResultCard({
               {result.match_percentage}%
             </div>
             <div className={`text-[8px] font-bold uppercase tracking-widest ${
-              theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
+              theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'
             }`}>Match</div>
           </div>
 
@@ -710,8 +710,8 @@ function ResultCard({
               title="Cycle status"
               className={`p-1 rounded-lg transition-colors text-[10px] font-bold ${
                 theme === 'dark'
-                  ? 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800'
-                  : 'text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100'
+                  ? 'text-[#5d7a96] hover:text-[#c8ddf0] hover:bg-[#1e3a5f]/40'
+                  : 'text-[#7a9db8] hover:text-zinc-700 hover:bg-zinc-100'
               }`}
             >
               <Tag className="w-3.5 h-3.5" />
@@ -724,8 +724,8 @@ function ResultCard({
                 title="Compare"
                 className={`p-1 rounded-lg transition-colors ${
                   theme === 'dark'
-                    ? 'text-purple-400 hover:text-purple-300 hover:bg-purple-500/10'
-                    : 'text-purple-500 hover:text-purple-700 hover:bg-purple-50'
+                    ? 'text-[#0ef6cc] hover:text-purple-300 hover:bg-cyan-500/10'
+                    : 'text-[#0ef6cc] hover:text-purple-700 hover:bg-cyan-50'
                 }`}
               >
                 <GitCompare className="w-3.5 h-3.5" />
@@ -737,8 +737,8 @@ function ResultCard({
               onClick={() => setExpanded(!expanded)}
               className={`p-1.5 rounded-lg transition-colors ${
                 theme === 'dark'
-                  ? 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800'
-                  : 'text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100'
+                  ? 'text-[#5d7a96] hover:text-[#c8ddf0] hover:bg-[#1e3a5f]/40'
+                  : 'text-[#7a9db8] hover:text-zinc-700 hover:bg-zinc-100'
               }`}
               aria-label="Toggle details"
             >
@@ -758,9 +758,9 @@ function ResultCard({
             transition={{ duration: 0.25 }}
             className="overflow-hidden"
           >
-            <div className={`border-t ${theme === 'dark' ? 'border-zinc-800' : 'border-zinc-100'}`}>
+            <div className={`border-t ${theme === 'dark' ? 'border-[#1e3a5f]' : 'border-zinc-100'}`}>
               {/* Tab bar */}
-              <div className={`flex border-b ${theme === 'dark' ? 'border-zinc-800' : 'border-zinc-100'}`}>
+              <div className={`flex border-b ${theme === 'dark' ? 'border-[#1e3a5f]' : 'border-zinc-100'}`}>
                 {(['keywords', 'breakdown', 'suggestions'] as const).map((tab) => (
                   <button
                     key={tab}
@@ -768,11 +768,11 @@ function ResultCard({
                     className={`flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-colors ${
                       activeTab === tab
                         ? theme === 'dark'
-                          ? 'text-zinc-100 border-b-2 border-purple-400'
-                          : 'text-zinc-900 border-b-2 border-purple-500'
+                          ? 'text-[#e8f4f8] border-b-2 border-cyan-400'
+                          : 'text-zinc-900 border-b-2 border-cyan-500'
                         : theme === 'dark'
-                        ? 'text-zinc-500 hover:text-zinc-300'
-                        : 'text-zinc-400 hover:text-zinc-600'
+                        ? 'text-[#5d7a96] hover:text-[#a0bdd4]'
+                        : 'text-[#7a9db8] hover:text-zinc-600'
                     }`}
                   >
                     {tab === 'keywords' ? 'Keywords' : tab === 'breakdown' ? 'Score Breakdown' : 'Suggestions'}
@@ -792,7 +792,7 @@ function ResultCard({
                             <PolarGrid stroke={theme === 'dark' ? '#27272a' : '#e4e4e7'} />
                             <PolarAngleAxis
                               dataKey="subject"
-                              tick={{ fontSize: 9, fill: theme === 'dark' ? '#71717a' : '#a1a1aa' }}
+                              tick={{ fontSize: 9, fill: theme === 'dark' ? '#5d7a96' : '#a1a1aa' }}
                             />
                             <Radar
                               name="Score"
@@ -813,7 +813,7 @@ function ResultCard({
                         <div className="flex items-center gap-1.5 mb-2">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                           <span className={`text-[10px] font-bold uppercase tracking-widest ${
-                            theme === 'dark' ? 'text-zinc-400' : 'text-zinc-500'
+                            theme === 'dark' ? 'text-[#7a9db8]' : 'text-[#5d7a96]'
                           }`}>
                             Matched ({result.matched_keywords.length}/{result.total_jd_keywords})
                           </span>
@@ -835,7 +835,7 @@ function ResultCard({
                         <div className="flex items-center gap-1.5 mb-2">
                           <XCircle className="w-3.5 h-3.5 text-rose-500" />
                           <span className={`text-[10px] font-bold uppercase tracking-widest ${
-                            theme === 'dark' ? 'text-zinc-400' : 'text-zinc-500'
+                            theme === 'dark' ? 'text-[#7a9db8]' : 'text-[#5d7a96]'
                           }`}>
                             Missing ({result.missing_keywords.length})
                           </span>
@@ -857,7 +857,7 @@ function ResultCard({
                         <div className="flex items-center gap-1.5 mb-2">
                           <Hash className="w-3.5 h-3.5 text-blue-400" />
                           <span className={`text-[10px] font-bold uppercase tracking-widest ${
-                            theme === 'dark' ? 'text-zinc-400' : 'text-zinc-500'
+                            theme === 'dark' ? 'text-[#7a9db8]' : 'text-[#5d7a96]'
                           }`}>
                             Phrase Matches
                           </span>
@@ -877,9 +877,9 @@ function ResultCard({
                     {Object.keys(result.skill_categories).length > 0 && (
                       <div>
                         <div className="flex items-center gap-1.5 mb-2">
-                          <Layers className="w-3.5 h-3.5 text-purple-400" />
+                          <Layers className="w-3.5 h-3.5 text-[#0ef6cc]" />
                           <span className={`text-[10px] font-bold uppercase tracking-widest ${
-                            theme === 'dark' ? 'text-zinc-400' : 'text-zinc-500'
+                            theme === 'dark' ? 'text-[#7a9db8]' : 'text-[#5d7a96]'
                           }`}>
                             Category Coverage
                           </span>
@@ -889,13 +889,13 @@ function ResultCard({
                             <div key={cat}>
                               <div className="flex justify-between mb-1">
                                 <span className={`text-[10px] font-medium ${
-                                  theme === 'dark' ? 'text-zinc-400' : 'text-zinc-500'
+                                  theme === 'dark' ? 'text-[#7a9db8]' : 'text-[#5d7a96]'
                                 }`}>{cat}</span>
                                 <span className={`text-[10px] font-bold ${scoreColor(data.coverage_pct)}`}>
                                   {data.coverage_pct}%
                                 </span>
                               </div>
-                              <div className="h-1 w-full rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                              <div className="h-1 w-full rounded-full bg-zinc-100 dark:bg-[#1e3a5f]/40 overflow-hidden">
                                 <motion.div
                                   className={`h-full rounded-full bg-gradient-to-r ${
                                     data.coverage_pct >= 70 ? 'from-emerald-500 to-emerald-400' :
@@ -920,7 +920,7 @@ function ResultCard({
                     {/* Score breakdown bars with tooltips */}
                     <div className="space-y-3">
                       {[
-                        { label: 'Composite Score', value: result.composite_score, color: 'from-purple-500 to-purple-400' },
+                        { label: 'Composite Score', value: result.composite_score, color: 'from-purple-500 to-[#0ef6cc]' },
                         { label: 'JD Match', value: result.match_percentage, color: 'from-blue-500 to-blue-400' },
                         { label: 'Keyword Coverage', value: result.keyword_score, color: 'from-indigo-500 to-indigo-400' },
                         { label: 'Semantic (Cosine)', value: result.cosine_score, color: 'from-cyan-500 to-cyan-400' },
@@ -935,19 +935,19 @@ function ResultCard({
                     {atsBarData.length > 0 && (
                       <div>
                         <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${
-                          theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
+                          theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'
                         }`}>ATS Sub-Categories</p>
                         <div className="h-32">
                           <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={atsBarData} barSize={12}>
-                              <XAxis dataKey="name" tick={{ fontSize: 8, fill: theme === 'dark' ? '#71717a' : '#a1a1aa' }} />
-                              <YAxis domain={[0, 100]} tick={{ fontSize: 8, fill: theme === 'dark' ? '#71717a' : '#a1a1aa' }} />
+                              <XAxis dataKey="name" tick={{ fontSize: 8, fill: theme === 'dark' ? '#5d7a96' : '#a1a1aa' }} />
+                              <YAxis domain={[0, 100]} tick={{ fontSize: 8, fill: theme === 'dark' ? '#5d7a96' : '#a1a1aa' }} />
                               <Tooltip
                                 contentStyle={{
                                   fontSize: '10px',
-                                  background: theme === 'dark' ? '#18181b' : '#ffffff',
+                                  background: theme === 'dark' ? '#0a1628' : '#ffffff',
                                   border: `1px solid ${theme === 'dark' ? '#27272a' : '#e4e4e7'}`,
-                                  color: theme === 'dark' ? '#f4f4f5' : '#18181b'
+                                  color: theme === 'dark' ? '#e8f4f8' : '#0a1628'
                                 }}
                               />
                               <Bar dataKey="value" radius={[4, 4, 0, 0]}>
@@ -973,11 +973,11 @@ function ResultCard({
                       <li key={i} className="flex gap-3 items-start">
                         <div className={`w-5 h-5 rounded flex items-center justify-center text-[9px] font-bold shrink-0 mt-0.5 border ${
                           theme === 'dark'
-                            ? 'bg-zinc-800 border-zinc-700 text-zinc-400'
-                            : 'bg-zinc-100 border-zinc-200 text-zinc-500'
+                            ? 'bg-[#1e3a5f]/40 border-zinc-700 text-[#7a9db8]'
+                            : 'bg-zinc-100 border-[#c8ddf0] text-[#5d7a96]'
                         }`}>{i + 1}</div>
                         <span className={`text-xs font-light leading-relaxed ${
-                          theme === 'dark' ? 'text-zinc-400' : 'text-zinc-600'
+                          theme === 'dark' ? 'text-[#7a9db8]' : 'text-zinc-600'
                         }`}>{s}</span>
                       </li>
                     ))}
@@ -1158,23 +1158,23 @@ export default function ResumeScreening() {
   // ── Render ────────────────────────────────────────────────────────────────
 
   const card = `rounded-2xl border p-5 ${
-    theme === 'dark' ? 'bg-zinc-900/80 border-zinc-800' : 'bg-white border-zinc-200'
+    theme === 'dark' ? 'bg-[#0a1628]/80 border-[#1e3a5f]' : 'bg-white border-[#c8ddf0]'
   }`;
 
   return (
     <div className="space-y-8 text-left">
       {/* ── Header ── */}
-      <div className={`pb-6 border-b ${theme === 'dark' ? 'border-zinc-900/60' : 'border-zinc-200'}`}>
+      <div className={`pb-6 border-b ${theme === 'dark' ? 'border-[#162340]/60' : 'border-[#c8ddf0]'}`}>
         <span className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
-          theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
+          theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'
         }`}>NLP Batch Screening Engine · Task 04</span>
         <h2 className={`text-2xl font-semibold tracking-tight ${
-          theme === 'dark' ? 'text-zinc-100' : 'text-zinc-900'
+          theme === 'dark' ? 'text-[#e8f4f8]' : 'text-zinc-900'
         }`}>
           AI Resume Screening
         </h2>
         <p className={`text-xs font-light mt-1.5 leading-relaxed max-w-2xl ${
-          theme === 'dark' ? 'text-zinc-500' : 'text-zinc-500'
+          theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#5d7a96]'
         }`}>
           Upload multiple resumes and a job description. The engine extracts text via NLP,
           computes <strong className="font-medium">keyword coverage</strong>,{' '}
@@ -1191,7 +1191,7 @@ export default function ResumeScreening() {
             {/* Dropzone */}
             <div>
               <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
-                theme === 'dark' ? 'text-zinc-400' : 'text-zinc-500'
+                theme === 'dark' ? 'text-[#7a9db8]' : 'text-[#5d7a96]'
               }`}>
                 Resumes · PDF / DOCX · max 10
               </label>
@@ -1203,20 +1203,20 @@ export default function ResumeScreening() {
                 className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
                   isDragging
                     ? theme === 'dark'
-                      ? 'border-purple-500/60 bg-purple-500/5'
-                      : 'border-purple-400 bg-purple-50'
+                      ? 'border-cyan-500/60 bg-cyan-500/5'
+                      : 'border-cyan-400 bg-cyan-50'
                     : theme === 'dark'
-                    ? 'border-zinc-800 hover:border-zinc-700 bg-zinc-900/40'
-                    : 'border-zinc-200 hover:border-zinc-300 bg-zinc-50'
+                    ? 'border-[#1e3a5f] hover:border-zinc-700 bg-[#0a1628]/40'
+                    : 'border-[#c8ddf0] hover:border-zinc-300 bg-zinc-50'
                 }`}
               >
                 <Upload className={`w-6 h-6 mb-2 ${
-                  theme === 'dark' ? 'text-zinc-600' : 'text-zinc-400'
+                  theme === 'dark' ? 'text-zinc-600' : 'text-[#7a9db8]'
                 }`} />
                 <p className={`text-xs font-medium ${
-                  theme === 'dark' ? 'text-zinc-300' : 'text-zinc-700'
+                  theme === 'dark' ? 'text-[#a0bdd4]' : 'text-zinc-700'
                 }`}>Drag & drop or click to browse</p>
-                <p className="text-[10px] text-zinc-500 mt-0.5">PDF & DOCX supported</p>
+                <p className="text-[10px] text-[#5d7a96] mt-0.5">PDF & DOCX supported</p>
                 <input ref={fileInputRef} type="file" multiple accept=".pdf,.docx" className="hidden"
                   onChange={(e) => e.target.files && addFiles(e.target.files)} />
               </div>
@@ -1225,31 +1225,31 @@ export default function ResumeScreening() {
             {/* File list */}
             {files.length > 0 && (
               <div className={`rounded-xl border overflow-hidden ${
-                theme === 'dark' ? 'border-zinc-800' : 'border-zinc-200'
+                theme === 'dark' ? 'border-[#1e3a5f]' : 'border-[#c8ddf0]'
               }`}>
                 <div className={`flex items-center justify-between px-3 py-2 border-b text-[10px] font-bold uppercase tracking-widest ${
-                  theme === 'dark' ? 'border-zinc-800 text-zinc-500 bg-zinc-900/60' : 'border-zinc-200 text-zinc-400 bg-zinc-50'
+                  theme === 'dark' ? 'border-[#1e3a5f] text-[#5d7a96] bg-[#0a1628]/60' : 'border-[#c8ddf0] text-[#7a9db8] bg-zinc-50'
                 }`}>
                   <span>{files.length} / 10 files</span>
                   <button type="button" onClick={() => setFiles([])}
                     className={`font-medium transition-colors ${
-                      theme === 'dark' ? 'text-zinc-500 hover:text-rose-400' : 'text-zinc-400 hover:text-rose-500'
+                      theme === 'dark' ? 'text-[#5d7a96] hover:text-rose-400' : 'text-[#7a9db8] hover:text-rose-500'
                     }`}>Clear all</button>
                 </div>
                 <div className="max-h-44 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/60">
                   {files.map((f, i) => (
                     <div key={i} className={`flex items-center gap-2.5 px-3 py-2 ${
-                      theme === 'dark' ? 'hover:bg-zinc-800/40' : 'hover:bg-zinc-50'
+                      theme === 'dark' ? 'hover:bg-[#1e3a5f]/40/40' : 'hover:bg-zinc-50'
                     }`}>
-                      <FileText className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+                      <FileText className="w-3.5 h-3.5 text-[#5d7a96] shrink-0" />
                       <span className={`text-xs truncate flex-1 ${
-                        theme === 'dark' ? 'text-zinc-300' : 'text-zinc-700'
+                        theme === 'dark' ? 'text-[#a0bdd4]' : 'text-zinc-700'
                       }`}>{f.name}</span>
-                      <span className="text-[9px] text-zinc-500 shrink-0">
+                      <span className="text-[9px] text-[#5d7a96] shrink-0">
                         {(f.size / 1024).toFixed(0)}KB
                       </span>
                       <button type="button" onClick={() => removeFile(i)}
-                        className="text-zinc-500 hover:text-rose-400 p-0.5 transition-colors"
+                        className="text-[#5d7a96] hover:text-rose-400 p-0.5 transition-colors"
                         aria-label={`Remove ${f.name}`}>
                         <X className="w-3 h-3" />
                       </button>
@@ -1262,7 +1262,7 @@ export default function ResumeScreening() {
             {/* Job description */}
             <div>
               <label htmlFor="jd-screen-input" className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
-                theme === 'dark' ? 'text-zinc-400' : 'text-zinc-500'
+                theme === 'dark' ? 'text-[#7a9db8]' : 'text-[#5d7a96]'
               }`}>
                 Job Description / Requirements
               </label>
@@ -1271,11 +1271,11 @@ export default function ResumeScreening() {
                 placeholder="Paste job description, required skills, responsibilities, and qualifications here..."
                 className={`w-full rounded-xl border p-4 text-xs font-light leading-relaxed resize-none focus:outline-none focus:ring-1 transition-all ${
                   theme === 'dark'
-                    ? 'bg-zinc-900/20 border-zinc-800 text-zinc-200 placeholder-zinc-600 focus:border-zinc-700 focus:ring-transparent'
-                    : 'bg-white border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:border-zinc-300 focus:ring-zinc-200'
+                    ? 'bg-[#0a1628]/20 border-[#1e3a5f] text-[#c8ddf0] placeholder-zinc-600 focus:border-zinc-700 focus:ring-transparent'
+                    : 'bg-white border-[#c8ddf0] text-zinc-900 placeholder-zinc-400 focus:border-zinc-300 focus:ring-zinc-200'
                 }`} />
               <div className={`flex justify-between text-[10px] mt-1 ${
-                theme === 'dark' ? 'text-zinc-600' : 'text-zinc-400'
+                theme === 'dark' ? 'text-zinc-600' : 'text-[#7a9db8]'
               }`}>
                 <span>Min. 50 chars — more detail = better accuracy</span>
                 <span>{jdText.length}</span>
@@ -1299,7 +1299,7 @@ export default function ResumeScreening() {
               className={`w-full flex items-center justify-center gap-2 rounded-xl text-xs font-semibold h-11 transition-all disabled:opacity-50 active:scale-[0.98] ${
                 theme === 'dark'
                   ? 'bg-zinc-100 text-zinc-950 hover:bg-zinc-200'
-                  : 'bg-zinc-900 text-white hover:bg-zinc-800'
+                  : 'bg-[#0a1628] text-white hover:bg-[#1e3a5f]/40'
               }`}>
               {isLoading ? (
                 <>
@@ -1316,10 +1316,10 @@ export default function ResumeScreening() {
 
             {/* How it works */}
             <div className={`rounded-xl border p-4 space-y-2 ${
-              theme === 'dark' ? 'border-zinc-800 bg-zinc-900/40' : 'border-zinc-100 bg-zinc-50'
+              theme === 'dark' ? 'border-[#1e3a5f] bg-[#0a1628]/40' : 'border-zinc-100 bg-zinc-50'
             }`}>
               <p className={`text-[10px] font-bold uppercase tracking-widest ${
-                theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
+                theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'
               }`}>How scoring works</p>
               {[
                 ['55%', 'Keyword Coverage', 'purple'],
@@ -1329,12 +1329,12 @@ export default function ResumeScreening() {
                 <div key={label} className="flex items-center gap-2">
                   <span className={`text-[10px] font-bold w-7 text-${color}-500`}>{pct}</span>
                   <span className={`text-[10px] ${
-                    theme === 'dark' ? 'text-zinc-400' : 'text-zinc-600'
+                    theme === 'dark' ? 'text-[#7a9db8]' : 'text-zinc-600'
                   }`}>{label}</span>
                 </div>
               ))}
               <p className={`text-[9px] pt-1 ${
-                theme === 'dark' ? 'text-zinc-600' : 'text-zinc-400'
+                theme === 'dark' ? 'text-zinc-600' : 'text-[#7a9db8]'
               }`}>
                 Final composite = 75% JD match + 25% ATS quality score
               </p>
@@ -1346,22 +1346,22 @@ export default function ResumeScreening() {
         <div className="xl:col-span-8 space-y-5">
           {isLoading ? (
             <div className={`rounded-2xl border border-dashed p-16 flex flex-col items-center text-center gap-5 ${
-              theme === 'dark' ? 'border-zinc-800 bg-zinc-900/30' : 'border-zinc-200 bg-zinc-50'
+              theme === 'dark' ? 'border-[#1e3a5f] bg-[#0a1628]/30' : 'border-[#c8ddf0] bg-zinc-50'
             }`}>
               <div className="relative w-14 h-14">
                 <span className={`absolute inset-0 rounded-full animate-ping opacity-40 ${
-                  theme === 'dark' ? 'bg-purple-600' : 'bg-purple-300'
+                  theme === 'dark' ? 'bg-cyan-600' : 'bg-cyan-300'
                 }`} />
                 <div className={`relative w-full h-full rounded-full border-2 border-t-purple-500 animate-spin ${
-                  theme === 'dark' ? 'border-zinc-700' : 'border-zinc-200'
+                  theme === 'dark' ? 'border-zinc-700' : 'border-[#c8ddf0]'
                 }`} />
               </div>
               <div>
                 <p className={`text-sm font-semibold ${
-                  theme === 'dark' ? 'text-zinc-200' : 'text-zinc-800'
+                  theme === 'dark' ? 'text-[#c8ddf0]' : 'text-zinc-800'
                 }`}>Processing {files.length} resume{files.length > 1 ? 's' : ''}…</p>
                 <p className={`text-xs mt-1 ${
-                  theme === 'dark' ? 'text-zinc-600' : 'text-zinc-400'
+                  theme === 'dark' ? 'text-zinc-600' : 'text-[#7a9db8]'
                 }`}>Extracting text · Computing NLP similarity · Ranking candidates</p>
               </div>
             </div>
@@ -1378,14 +1378,14 @@ export default function ResumeScreening() {
                   <div key={label} className={card}>
                     <div className="flex items-center justify-between mb-1">
                       <span className={`text-[10px] font-bold uppercase tracking-widest ${
-                        theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
+                        theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'
                       }`}>{label}</span>
                       <Icon className={`w-3.5 h-3.5 ${
-                        theme === 'dark' ? 'text-zinc-600' : 'text-zinc-400'
+                        theme === 'dark' ? 'text-zinc-600' : 'text-[#7a9db8]'
                       }`} />
                     </div>
                     <p className={`text-xl font-bold ${
-                      theme === 'dark' ? 'text-zinc-100' : 'text-zinc-900'
+                      theme === 'dark' ? 'text-[#e8f4f8]' : 'text-zinc-900'
                     }`}>{value}{suffix}</p>
                   </div>
                 ))}
@@ -1399,7 +1399,7 @@ export default function ResumeScreening() {
                 {/* Sort + Search */}
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className={`text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 ${
-                    theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
+                    theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'
                   }`}>
                     <ArrowUpDown className="w-3 h-3" /> Sort by
                   </span>
@@ -1414,10 +1414,10 @@ export default function ResumeScreening() {
                         sortKey === key
                           ? theme === 'dark'
                             ? 'bg-zinc-100 text-zinc-950 border-zinc-100'
-                            : 'bg-zinc-900 text-white border-zinc-900'
+                            : 'bg-[#0a1628] text-white border-[#162340]'
                           : theme === 'dark'
-                          ? 'border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
-                          : 'border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:text-zinc-800'
+                          ? 'border-[#1e3a5f] text-[#7a9db8] hover:border-zinc-700 hover:text-[#c8ddf0]'
+                          : 'border-[#c8ddf0] text-[#5d7a96] hover:border-zinc-300 hover:text-zinc-800'
                       }`}>
                       {label}
                     </button>
@@ -1427,21 +1427,21 @@ export default function ResumeScreening() {
                 <div className="flex items-center gap-3 flex-wrap">
                   {/* Search */}
                   <div className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 ${
-                    theme === 'dark' ? 'border-zinc-800 bg-zinc-900/40' : 'border-zinc-200 bg-white'
+                    theme === 'dark' ? 'border-[#1e3a5f] bg-[#0a1628]/40' : 'border-[#c8ddf0] bg-white'
                   }`}>
-                    <Search className="w-3 h-3 text-zinc-400" />
+                    <Search className="w-3 h-3 text-[#7a9db8]" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={e => setSearchQuery(e.target.value)}
                       placeholder="Search candidates…"
                       className={`text-[10px] w-28 bg-transparent outline-none ${
-                        theme === 'dark' ? 'text-zinc-300 placeholder-zinc-600' : 'text-zinc-700 placeholder-zinc-400'
+                        theme === 'dark' ? 'text-[#a0bdd4] placeholder-zinc-600' : 'text-zinc-700 placeholder-zinc-400'
                       }`}
                     />
                     {searchQuery && (
                       <button onClick={() => setSearchQuery('')}>
-                        <X className="w-3 h-3 text-zinc-400" />
+                        <X className="w-3 h-3 text-[#7a9db8]" />
                       </button>
                     )}
                   </div>
@@ -1449,10 +1449,10 @@ export default function ResumeScreening() {
                   {/* Min score filter */}
                   <div className="flex items-center gap-2">
                     <Filter className={`w-3 h-3 ${
-                      theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
+                      theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'
                     }`} />
                     <span className={`text-[10px] ${
-                      theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
+                      theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'
                     }`}>Min {minScore}%</span>
                     <input type="range" min={0} max={80} step={5} value={minScore}
                       onChange={(e) => setMinScore(Number(e.target.value))}
@@ -1463,8 +1463,8 @@ export default function ResumeScreening() {
                   <button onClick={() => exportCSV()}
                     className={`flex items-center gap-1.5 text-[10px] font-semibold px-3 py-1.5 rounded-lg border transition-all ${
                       theme === 'dark'
-                        ? 'border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
-                        : 'border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:text-zinc-800'
+                        ? 'border-[#1e3a5f] text-[#7a9db8] hover:border-zinc-700 hover:text-[#c8ddf0]'
+                        : 'border-[#c8ddf0] text-[#5d7a96] hover:border-zinc-300 hover:text-zinc-800'
                     }`}>
                     <Download className="w-3 h-3" /> CSV
                   </button>
@@ -1481,12 +1481,12 @@ export default function ResumeScreening() {
                     transition={{ duration: 0.2 }}
                     className={`flex items-center justify-between gap-3 rounded-xl border p-3 ${
                       theme === 'dark'
-                        ? 'bg-purple-500/5 border-purple-500/20'
-                        : 'bg-purple-50 border-purple-200'
+                        ? 'bg-cyan-500/5 border-cyan-500/20'
+                        : 'bg-cyan-50 border-cyan-200'
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <CheckSquare className="w-3.5 h-3.5 text-purple-500" />
+                      <CheckSquare className="w-3.5 h-3.5 text-[#0ef6cc]" />
                       <span className={`text-[10px] font-semibold ${
                         theme === 'dark' ? 'text-purple-300' : 'text-purple-700'
                       }`}>
@@ -1495,7 +1495,7 @@ export default function ResumeScreening() {
                     </div>
                     <div className="flex items-center gap-2">
                       {compareMode && (
-                        <span className={`text-[10px] ${theme === 'dark' ? 'text-zinc-400' : 'text-zinc-500'}`}>
+                        <span className={`text-[10px] ${theme === 'dark' ? 'text-[#7a9db8]' : 'text-[#5d7a96]'}`}>
                           Click <GitCompare className="w-3 h-3 inline" /> on another card to compare
                         </span>
                       )}
@@ -1504,7 +1504,7 @@ export default function ResumeScreening() {
                         disabled={!selectedResults.some(r => r.email)}
                         className={`flex items-center gap-1.5 text-[10px] font-semibold px-2.5 py-1.5 rounded-lg border transition-all disabled:opacity-40 ${
                           theme === 'dark'
-                            ? 'border-zinc-700 text-zinc-300 hover:text-zinc-100 hover:border-zinc-600'
+                            ? 'border-zinc-700 text-[#a0bdd4] hover:text-[#e8f4f8] hover:border-zinc-600'
                             : 'border-zinc-300 text-zinc-600 hover:text-zinc-800 hover:border-zinc-400'
                         }`}
                       >
@@ -1515,8 +1515,8 @@ export default function ResumeScreening() {
                         onClick={() => exportCSV(selectedResults)}
                         className={`flex items-center gap-1.5 text-[10px] font-semibold px-2.5 py-1.5 rounded-lg border transition-all ${
                           theme === 'dark'
-                            ? 'bg-purple-500/20 border-purple-500/40 text-purple-300 hover:bg-purple-500/30'
-                            : 'bg-purple-100 border-purple-300 text-purple-700 hover:bg-purple-200'
+                            ? 'bg-cyan-500/20 border-cyan-500/40 text-purple-300 hover:bg-cyan-500/30'
+                            : 'bg-cyan-100 border-cyan-300 text-purple-700 hover:bg-cyan-200'
                         }`}
                       >
                         <Download className="w-3 h-3" /> Export Shortlist CSV
@@ -1524,7 +1524,7 @@ export default function ResumeScreening() {
                       <button
                         onClick={() => setSelectedIds(new Set())}
                         className={`text-[10px] px-2 py-1.5 rounded-lg transition-colors ${
-                          theme === 'dark' ? 'text-zinc-500 hover:text-zinc-300' : 'text-zinc-400 hover:text-zinc-600'
+                          theme === 'dark' ? 'text-[#5d7a96] hover:text-[#a0bdd4]' : 'text-[#7a9db8] hover:text-zinc-600'
                         }`}
                       >
                         Clear
@@ -1537,7 +1537,7 @@ export default function ResumeScreening() {
               {/* Candidate Cards */}
               {sortedResults.length === 0 ? (
                 <div className={`text-center py-10 text-xs ${
-                  theme === 'dark' ? 'text-zinc-500' : 'text-zinc-400'
+                  theme === 'dark' ? 'text-[#5d7a96]' : 'text-[#7a9db8]'
                 }`}>
                   No candidates found. Try adjusting the filter or search.
                 </div>
@@ -1569,18 +1569,18 @@ export default function ResumeScreening() {
           ) : (
             /* Empty state */
             <div className={`rounded-2xl border border-dashed min-h-[480px] flex flex-col items-center justify-center text-center p-12 ${
-              theme === 'dark' ? 'border-zinc-800 bg-zinc-900/30' : 'border-zinc-200 bg-zinc-50'
+              theme === 'dark' ? 'border-[#1e3a5f] bg-[#0a1628]/30' : 'border-[#c8ddf0] bg-zinc-50'
             }`}>
               <div className={`p-4 rounded-2xl border mb-4 ${
-                theme === 'dark' ? 'bg-zinc-900 border-zinc-800 text-zinc-500' : 'bg-white border-zinc-200 text-zinc-400'
+                theme === 'dark' ? 'bg-[#0a1628] border-[#1e3a5f] text-[#5d7a96]' : 'bg-white border-[#c8ddf0] text-[#7a9db8]'
               }`}>
                 <Brain className="w-7 h-7" />
               </div>
               <h3 className={`text-sm font-semibold mb-1 ${
-                theme === 'dark' ? 'text-zinc-300' : 'text-zinc-700'
+                theme === 'dark' ? 'text-[#a0bdd4]' : 'text-zinc-700'
               }`}>Awaiting Resumes & Job Description</h3>
               <p className={`text-[11px] max-w-sm leading-relaxed mb-8 ${
-                theme === 'dark' ? 'text-zinc-600' : 'text-zinc-400'
+                theme === 'dark' ? 'text-zinc-600' : 'text-[#7a9db8]'
               }`}>
                 Upload PDFs or DOCX files and paste a job description. The NLP engine will
                 extract, analyze, and rank all candidates automatically.
@@ -1593,15 +1593,15 @@ export default function ResumeScreening() {
                 ].map(({ Icon, label, desc }) => (
                   <div key={label} className="flex flex-col items-center gap-2">
                     <div className={`w-10 h-10 rounded-xl border flex items-center justify-center ${
-                      theme === 'dark' ? 'bg-zinc-900 border-zinc-800 text-zinc-500' : 'bg-white border-zinc-200 text-zinc-400'
+                      theme === 'dark' ? 'bg-[#0a1628] border-[#1e3a5f] text-[#5d7a96]' : 'bg-white border-[#c8ddf0] text-[#7a9db8]'
                     }`}>
                       <Icon className="w-4 h-4" />
                     </div>
                     <p className={`text-[10px] font-bold ${
-                      theme === 'dark' ? 'text-zinc-400' : 'text-zinc-600'
+                      theme === 'dark' ? 'text-[#7a9db8]' : 'text-zinc-600'
                     }`}>{label}</p>
                     <p className={`text-[9px] ${
-                      theme === 'dark' ? 'text-zinc-600' : 'text-zinc-400'
+                      theme === 'dark' ? 'text-zinc-600' : 'text-[#7a9db8]'
                     }`}>{desc}</p>
                   </div>
                 ))}
