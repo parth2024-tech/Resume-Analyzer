@@ -17,7 +17,7 @@ export default function AIChatPanel({ onClose }: { onClose?: () => void }) {
     {
       id: 'welcome',
       role: 'assistant',
-      content: "Hi! I am your AI Resume Assistant. I've analyzed your resume credentials. How can I help you optimize your profile today?",
+      content: "Hello! I'm CerebroAI, your neural resume assistant. I've decoded your resume's structure and signals. What would you like to optimize today?",
     },
   ]);
   const [input, setInput] = useState('');

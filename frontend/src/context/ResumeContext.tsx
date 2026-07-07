@@ -166,7 +166,7 @@ export function ResumeProvider({ children }: { children: ReactNode }) {
 
   // Load history on mount
   useEffect(() => {
-    const saved = localStorage.getItem('resume-history');
+    const saved = localStorage.getItem('cerebro-sessions');
     if (saved) {
       try {
         const parsed = JSON.parse(saved) as HistoryItem[];
@@ -187,7 +187,7 @@ export function ResumeProvider({ children }: { children: ReactNode }) {
 
   const saveHistory = (newHistory: HistoryItem[]) => {
     setHistory(newHistory);
-    localStorage.setItem('resume-history', JSON.stringify(newHistory));
+    localStorage.setItem('cerebro-sessions', JSON.stringify(newHistory));
   };
 
   const clearState = () => {

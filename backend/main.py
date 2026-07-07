@@ -32,15 +32,15 @@ class RateLimitException(Exception):
     pass
 
 app = FastAPI(
-    title="AI Resume Analyzer API",
-    description="Backend service for analyzing resumes and matching them with job descriptions",
-    version="1.0.0"
+    title="CerebroAI Resume Intelligence API",
+    description="Neural resume intelligence backend — ATS scoring, NLP keyword analysis, semantic job matching, and batch candidate screening powered by Gemini AI.",
+    version="2.0.0"
 )
 
 origins = [
     "http://localhost:5173",
     "http://localhost:5174",
-    "https://resume-intellect-hazel.vercel.app"
+    "https://cerebro-ai.vercel.app"
 ]
 
 app.add_middleware(

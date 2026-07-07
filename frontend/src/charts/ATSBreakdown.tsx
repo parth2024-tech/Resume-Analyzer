@@ -76,8 +76,8 @@ export default function ATSBreakdown({ data }: ATSBreakdownProps) {
           />
           <defs>
             <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#a78bfa" stopOpacity={0.8} />
-              <stop offset="100%" stopColor="#f472b6" stopOpacity={0.15} />
+              <stop offset="0%" stopColor="#0ef6cc" stopOpacity={0.8} />
+              <stop offset="100%" stopColor="#38bdf8" stopOpacity={0.15} />
             </linearGradient>
           </defs>
         </BarChart>

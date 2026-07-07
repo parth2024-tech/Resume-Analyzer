@@ -45,8 +45,8 @@ export default function SkillDistribution({ radarData }: SkillDistributionProps)
           <Radar
             name="Skills Coverage"
             dataKey="Value"
-            stroke="#a78bfa"
-            fill="#a78bfa"
+            stroke="#0ef6cc"
+            fill="#0ef6cc"
             fillOpacity={theme === 'dark' ? 0.15 : 0.22}
           />
         </RadarChart>

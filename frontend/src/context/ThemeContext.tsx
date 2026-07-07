@@ -13,7 +13,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const saved = localStorage.getItem('app-theme');
+    const saved = localStorage.getItem('cerebro-theme');
     if (saved === 'light' || saved === 'dark') return saved;
     // Check system preference
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
-    localStorage.setItem('app-theme', theme);
+    localStorage.setItem('cerebro-theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {

@@ -37,9 +37,9 @@ export default function App() {
             <Routes>
               <Route path="/" element={<RootLayout />}>
                 <Route index element={<Home />} />
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="job-match" element={<JobMatch />} />
-                <Route path="screen" element={<ResumeScreening />} />
+                <Route path="analyze" element={<Dashboard />} />
+                <Route path="match" element={<JobMatch />} />
+                <Route path="recruit" element={<ResumeScreening />} />
                 <Route path="share" element={<ShareView />} />
               </Route>
             </Routes>
